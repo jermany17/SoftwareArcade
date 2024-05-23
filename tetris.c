@@ -5,3 +5,9 @@
 #include <Windows.h>
 #include <time.h>
 #include <conio.h>
+
+int tetris() {
+
+
+	return 0;
+}

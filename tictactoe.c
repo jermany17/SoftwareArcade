@@ -5,3 +5,9 @@
 #include <Windows.h>
 #include <time.h>
 #include <conio.h>
+
+int tictactoe() {
+
+
+	return 0;
+}
