@@ -7,7 +7,10 @@
 #include <conio.h>
 
 int main() {
-
+	console();
+	removeCursor();
+	snake();
+	getch();
 
 	return 0;
 }
