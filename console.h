@@ -33,6 +33,9 @@ void gotoxycol(int x, int y, int col, char* s) {
     printf("%s", s);
 }
 
+void textcolor(int colorNum) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colorNum);
+}
 // 0(Black) 1(Dark Blue) 2(Dark Green) 3(Dark Sky Blue) 4(Dark Red)
 // 5(Dark Purple) 6(Dark Yellow) 7(Gray) 8(Dark Gray) 9(Blue)
 // 10(Green) 11(Sky Blue) 12(Red) 13(Purple) 14(Yellow) 15(White)
