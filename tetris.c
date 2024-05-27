@@ -11,12 +11,10 @@
 int tetris() {
     int i;
     srand((unsigned)time(NULL));
-    removeCursor(); //ì»¤ì„œë¥¼ ìˆ¨ê¹€ 
-    firsttitle(); // ì²« í™”ë©´ 
+    removeCursor(); //Ä¿¼­¸¦ ¼û±è 
+    firsttitle(); // Ã¹ È­¸é 
     system("cls");
-    reset_main_block(); // ë©”ì¸ ë¸”ë¡ ì´ˆê¸°í™”
-    draw_main_block(); // ë©”ì¸ ë¸”ë¡ ê·¸ë¦¬ê¸°
-
-    return 0;
-
+    reset_main_block(); // ¸ŞÀÎ ºí·Ï ÃÊ±âÈ­
+    draw_main_block(); // ¸ŞÀÎ ºí·Ï ±×¸®±â
+	return 0;
 }
