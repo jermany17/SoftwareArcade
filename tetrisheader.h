@@ -9,35 +9,34 @@
 #include <conio.h>
 #include <stdbool.h>
 
-#define kbhit _kbhit   
-#define getch _getch   
+int main_block[23][11]; // 게임판 정보
+int main_copy[23][11];  // 게임판 정보
 
-void hideCursor() {
-    HANDLE consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE);
-    CONSOLE_CURSOR_INFO cursorInfo;
-    cursorInfo.bVisible = FALSE; // 커서를 숨김
-    SetConsoleCursorInfo(consoleHandle, &cursorInfo);
+void hideCursor(void) { // 커서를 숨기는 함수
+    CONSOLE_CURSOR_INFO CurInfo;
+    CurInfo.dwSize = 1;
+    CurInfo.bVisible = FALSE;
+    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &CurInfo);
 }
 
-void gotoxy(int x, int y) {
+void gotoxy(int x, int y) { // 커서의 위치를 이동
     COORD coord;
-    coord.X = x;
+    coord.X = 2 * x;
     coord.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void setColor(int color) { // 색상 지정
+void setColor(int color) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 }
 
-void firsttitle(void) {
-    int x = 5;  // 시작 화면이 표시되는 x좌표 
-    int y = 4;  // 시작 화면이 표시되는 y좌표 
+void firsttitle(void) { // 첫 화면 
+    int x = 5;  // x좌표 
+    int y = 4;  // y좌표 
 
-    int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY;
+    int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // 민트
+    setColor(mintColor); // 제목 색상 지정
 
-    // 제목
-    setColor(mintColor);
     gotoxy(x, y + 0); printf("■■■■■■  ■■■■■■  ■■■■■■  ■■■■■■  ■■■■■■   ■■■■■"); Sleep(100);
     gotoxy(x, y + 1); printf("  ■■    ■■        ■■    ■■  ■■    ■■    ■■■"); Sleep(100);
     gotoxy(x, y + 2); printf("  ■■    ■■        ■■    ■■■■■■    ■■      ■■■"); Sleep(100);
@@ -47,8 +46,76 @@ void firsttitle(void) {
     gotoxy(x, y + 6); printf("  ■■    ■■■■■■    ■■    ■■  ■■  ■■■■■■  ■■■■■"); Sleep(100);
 
     int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-    setColor(defaultColor);
-    gotoxy(x, y + 11); printf("게임을 시작하려면 아무키나 누르세요");
-    gotoxy(x, y + 13); printf("P R E S S  A N Y  K E Y");
-    while (kbhit()) getch(); // 저장된 키 값을 버림
+    setColor(defaultColor); // 안내 문구 색상 지정
+
+    gotoxy(x, y + 11); printf("게임을 시작하려면 아무키나 누르세요"); // 안내 문구(한글)
+    gotoxy(x, y + 13); printf("P R E S S  A N Y  K E Y"); // 안내 문구(ENG)
+    while (_kbhit()) _getch(); // 모든 키 값을 버림
+
+    _getch(); // 키 입력을 기다림
+}
+
+void reset_main_block(void) { // 메인 블록 초기화
+    int i, j;
+
+    for (i = 0; i < 23; i++) {       // 게임판 초기화  
+        for (j = 0; j < 11; j++) {
+            main_block[i][j] = 0;
+            main_copy[i][j] = 100;
+        }
+    }
+    for (j = 0; j < 11; j++) {      // 바닥
+        main_block[23 - 1][j] = 1;
+    }
+    for (j = 1; j < 11; j++) {      // 천장 
+        main_block[3][j] = -1;
+    }
+    for (i = 1; i < 23 - 1; i++) {  // 좌우
+        main_block[i][0] = 1;
+        main_block[i][11 - 1] = 1;
+    }
+}
+
+void draw_main_block(void) { // 메인 블록 그리기
+    int i, j;
+
+    for (j = 1; j < 11 - 1; j++) { // 천장은 새로운블럭이 지나가면 다시 그려줌 
+        if (main_block[3][j] == 0) main_block[3][j] = -1;
+    }
+    for (i = 0; i < 23; i++) {
+        for (j = 0; j < 11; j++) {
+            if (main_copy[i][j] != main_block[i][j]) {
+                // mina_copy와 비교 후 값이 달라진 부분만 새로 그림
+
+                int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // 민트
+                setColor(mintColor);// 색상 지정
+                gotoxy(3 + j, 1 + i);
+
+                switch (main_block[i][j]) {
+                case 0:  // 빈칸
+                    printf("  ");
+                    break;
+                case -1: // 천장 
+                    printf(". ");
+                    break;
+                case 1:  // 벽 
+                    printf("▩");
+                    break;
+                case 2:  // 도착한 블럭  
+                    printf("□");
+                    break;
+                case -2: // 움직이는 블럭  
+                    printf("■");
+                    break;
+                }
+            }
+        }
+        int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; // 색상 원래대로
+        setColor(defaultColor); // 색상 지정
+    }
+    for (i = 0; i < 23; i++) { //게임판을 그린 후 main_cpy에 복사  
+        for (j = 0; j < 11; j++) {
+            main_copy[i][j] = main_block[i][j];
+        }
+    }
 }
