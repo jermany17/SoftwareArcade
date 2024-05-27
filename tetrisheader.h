@@ -1,6 +1,4 @@
 #pragma once
-
-#pragma warning(disable:4996)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,113 +7,100 @@
 #include <conio.h>
 #include <stdbool.h>
 
-int main_block[23][11]; // °ÔÀÓÆÇ Á¤º¸
-int main_copy[23][11];  // °ÔÀÓÆÇ Á¤º¸
+int main_block[23][11]; // ê²Œì„íŒ ì •ë³´
+int main_copy[23][11];  // ê²Œì„íŒ ì •ë³´
 
-void hideCursor(void) { // Ä¿¼­¸¦ ¼û±â´Â ÇÔ¼ö
-    CONSOLE_CURSOR_INFO CurInfo;
-    CurInfo.dwSize = 1;
-    CurInfo.bVisible = FALSE;
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &CurInfo);
-}
+void removeCursor(void);
+void setCurrentCursorPos(int x, int y);
+void textcolor(int color);
 
-void gotoxy(int x, int y) { // Ä¿¼­ÀÇ À§Ä¡¸¦ ÀÌµ¿
-    COORD coord;
-    coord.X = 2 * x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
+void firsttitle(void) { // ì²« í™”ë©´ 
+    int x = 5;  // xì¢Œí‘œ 
+    int y = 4;  // yì¢Œí‘œ 
 
-void setColor(int color) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
+    int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // ë¯¼íŠ¸
+    textcolor(mintColor); // ì œëª© ìƒ‰ìƒ ì§€ì •
 
-void firsttitle(void) { // Ã¹ È­¸é 
-    int x = 5;  // xÁÂÇ¥ 
-    int y = 4;  // yÁÂÇ¥ 
-
-    int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // ¹ÎÆ®
-    setColor(mintColor); // Á¦¸ñ »ö»ó ÁöÁ¤
-
-    gotoxy(x, y + 0); printf("¡á¡á¡á¡á¡á¡á  ¡á¡á¡á¡á¡á¡á  ¡á¡á¡á¡á¡á¡á  ¡á¡á¡á¡á¡á¡á  ¡á¡á¡á¡á¡á¡á   ¡á¡á¡á¡á¡á"); Sleep(100);
-    gotoxy(x, y + 1); printf("  ¡á¡á    ¡á¡á        ¡á¡á    ¡á¡á  ¡á¡á    ¡á¡á    ¡á¡á¡á"); Sleep(100);
-    gotoxy(x, y + 2); printf("  ¡á¡á    ¡á¡á        ¡á¡á    ¡á¡á¡á¡á¡á¡á    ¡á¡á      ¡á¡á¡á"); Sleep(100);
-    gotoxy(x, y + 3); printf("  ¡á¡á    ¡á¡á¡á¡á¡á¡á    ¡á¡á    ¡á¡á ¡á¡á     ¡á¡á       ¡á¡á¡á"); Sleep(100);
-    gotoxy(x, y + 4); printf("  ¡á¡á    ¡á¡á        ¡á¡á    ¡á¡á  ¡á¡á    ¡á¡á        ¡á¡á¡á"); Sleep(100);
-    gotoxy(x, y + 5); printf("  ¡á¡á    ¡á¡á        ¡á¡á    ¡á¡á  ¡á¡á    ¡á¡á       ¡á¡á¡á"); Sleep(100);
-    gotoxy(x, y + 6); printf("  ¡á¡á    ¡á¡á¡á¡á¡á¡á    ¡á¡á    ¡á¡á  ¡á¡á  ¡á¡á¡á¡á¡á¡á  ¡á¡á¡á¡á¡á"); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 0); printf("â– â– â– â– â– â–   â– â– â– â– â– â–   â– â– â– â– â– â–   â– â– â– â– â– â–   â– â– â– â– â– â–    â– â– â– â– â– "); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 1); printf("  â– â–     â– â–         â– â–     â– â–   â– â–     â– â–     â– â– â– "); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 2); printf("  â– â–     â– â–         â– â–     â– â– â– â– â– â–     â– â–       â– â– â– "); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 3); printf("  â– â–     â– â– â– â– â– â–     â– â–     â– â–  â– â–      â– â–        â– â– â– "); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 4); printf("  â– â–     â– â–         â– â–     â– â–   â– â–     â– â–         â– â– â– "); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 5); printf("  â– â–     â– â–         â– â–     â– â–   â– â–     â– â–        â– â– â– "); Sleep(100);
+    setCurrentCursorPos(2 * x, y + 6); printf("  â– â–     â– â– â– â– â– â–     â– â–     â– â–   â– â–   â– â– â– â– â– â–   â– â– â– â– â– "); Sleep(100);
 
     int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-    setColor(defaultColor); // ¾È³» ¹®±¸ »ö»ó ÁöÁ¤
+    textcolor(defaultColor); // ì•ˆë‚´ ë¬¸êµ¬ ìƒ‰ìƒ ì§€ì •
 
-    gotoxy(x, y + 11); printf("°ÔÀÓÀ» ½ÃÀÛÇÏ·Á¸é ¾Æ¹«Å°³ª ´©¸£¼¼¿ä"); // ¾È³» ¹®±¸(ÇÑ±Û)
-    gotoxy(x, y + 13); printf("P R E S S  A N Y  K E Y"); // ¾È³» ¹®±¸(ENG)
-    while (_kbhit()) _getch(); // ¸ğµç Å° °ªÀ» ¹ö¸²
+    setCurrentCursorPos(2 * x, y + 11); printf("ê²Œì„ì„ ì‹œì‘í•˜ë ¤ë©´ ì•„ë¬´í‚¤ë‚˜ ëˆ„ë¥´ì„¸ìš”"); // ì•ˆë‚´ ë¬¸êµ¬(í•œê¸€)
+    setCurrentCursorPos(2 * x, y + 13); printf("P R E S S  A N Y  K E Y"); // ì•ˆë‚´ ë¬¸êµ¬(ENG)
+    while (_kbhit()) _getch(); // ëª¨ë“  í‚¤ ê°’ì„ ë²„ë¦¼
 
-    _getch(); // Å° ÀÔ·ÂÀ» ±â´Ù¸²
+    _getch(); // í‚¤ ì…ë ¥ì„ ê¸°ë‹¤ë¦¼
 }
 
-void reset_main_block(void) { // ¸ŞÀÎ ºí·Ï ÃÊ±âÈ­
+void reset_main_block(void) { // ë©”ì¸ ë¸”ë¡ ì´ˆê¸°í™”
     int i, j;
 
-    for (i = 0; i < 23; i++) {       // °ÔÀÓÆÇ ÃÊ±âÈ­  
+    for (i = 0; i < 23; i++) {       // ê²Œì„íŒ ì´ˆê¸°í™”  
         for (j = 0; j < 11; j++) {
             main_block[i][j] = 0;
             main_copy[i][j] = 100;
         }
     }
-    for (j = 0; j < 11; j++) {      // ¹Ù´Ú
+    for (j = 0; j < 11; j++) {      // ë°”ë‹¥
         main_block[23 - 1][j] = 1;
     }
-    for (j = 1; j < 11; j++) {      // ÃµÀå 
+    for (j = 1; j < 11; j++) {      // ì²œì¥ 
         main_block[3][j] = -1;
     }
-    for (i = 1; i < 23 - 1; i++) {  // ÁÂ¿ì
+    for (i = 1; i < 23 - 1; i++) {  // ì¢Œìš°
         main_block[i][0] = 1;
         main_block[i][11 - 1] = 1;
     }
 }
 
-void draw_main_block(void) { // ¸ŞÀÎ ºí·Ï ±×¸®±â
+void draw_main_block(void) { // ë©”ì¸ ë¸”ë¡ ê·¸ë¦¬ê¸°
     int i, j;
 
-    for (j = 1; j < 11 - 1; j++) { // ÃµÀåÀº »õ·Î¿îºí·°ÀÌ Áö³ª°¡¸é ´Ù½Ã ±×·ÁÁÜ 
+    for (j = 1; j < 11 - 1; j++) { // ì²œì¥ì€ ìƒˆë¡œìš´ë¸”ëŸ­ì´ ì§€ë‚˜ê°€ë©´ ë‹¤ì‹œ ê·¸ë ¤ì¤Œ 
         if (main_block[3][j] == 0) main_block[3][j] = -1;
     }
     for (i = 0; i < 23; i++) {
         for (j = 0; j < 11; j++) {
             if (main_copy[i][j] != main_block[i][j]) {
-                // mina_copy¿Í ºñ±³ ÈÄ °ªÀÌ ´Ş¶óÁø ºÎºĞ¸¸ »õ·Î ±×¸²
+                // mina_copyì™€ ë¹„êµ í›„ ê°’ì´ ë‹¬ë¼ì§„ ë¶€ë¶„ë§Œ ìƒˆë¡œ ê·¸ë¦¼
 
-                int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // ¹ÎÆ®
-                setColor(mintColor);// »ö»ó ÁöÁ¤
-                gotoxy(3 + j, 1 + i);
+                int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // ë¯¼íŠ¸
+                textcolor(mintColor);// ìƒ‰ìƒ ì§€ì •
+                setCurrentCursorPos(2 * (3 + j), 1 + i);
 
                 switch (main_block[i][j]) {
-                case 0:  // ºóÄ­
+                case 0:  // ë¹ˆì¹¸
                     printf("  ");
                     break;
-                case -1: // ÃµÀå 
+                case -1: // ì²œì¥ 
                     printf(". ");
                     break;
-                case 1:  // º® 
-                    printf("¢Ì");
+                case 1:  // ë²½ 
+                    printf("â–©");
                     break;
-                case 2:  // µµÂøÇÑ ºí·°  
-                    printf("¡à");
+                case 2:  // ë„ì°©í•œ ë¸”ëŸ­  
+                    printf("â–¡");
                     break;
-                case -2: // ¿òÁ÷ÀÌ´Â ºí·°  
-                    printf("¡á");
+                case -2: // ì›€ì§ì´ëŠ” ë¸”ëŸ­  
+                    printf("â– ");
                     break;
                 }
             }
         }
-        int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; // »ö»ó ¿ø·¡´ë·Î
-        setColor(defaultColor); // »ö»ó ÁöÁ¤
+        int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; // ìƒ‰ìƒ ì›ë˜ëŒ€ë¡œ
+        textcolor(defaultColor); // ìƒ‰ìƒ ì§€ì •
     }
-    for (i = 0; i < 23; i++) { //°ÔÀÓÆÇÀ» ±×¸° ÈÄ main_cpy¿¡ º¹»ç  
+    for (i = 0; i < 23; i++) { //ê²Œì„íŒì„ ê·¸ë¦° í›„ main_cpyì— ë³µì‚¬  
         for (j = 0; j < 11; j++) {
             main_copy[i][j] = main_block[i][j];
         }
     }
 }
+
