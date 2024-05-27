@@ -11,7 +11,10 @@
 int tetris() {
     int i;
     srand((unsigned)time(NULL));
-    hideCursor(); //커서를 숨김 
-    firsttitle();
-	return 0;
+    removeCursor(); //커서를 숨김 
+    firsttitle(); // 첫 화면 
+    system("cls");
+    reset_main_block(); // 메인 블록 초기화
+    draw_main_block(); // 메인 블록 그리기
+    return 0;
 }
