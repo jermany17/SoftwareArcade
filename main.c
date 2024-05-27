@@ -1,4 +1,4 @@
-#pragma warning(disable:4996)
+ï»¿#pragma warning(disable:4996)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -10,7 +10,7 @@ enum ColorType {
     BLACK, darkBLUE, DarkGreen, darkSkyBlue, DarkRed,
     DarkPurple, DarkYellow, GRAY, DarkGray, BLUE,
     GREEN, SkyBlue, RED, PURPLE, YELLOW, WHITE
-} COLOR; // ÄÃ·¯ ¼±ÅÃ ÇÒ ¼ö ÀÖÀ½
+} COLOR; // ì»¬ëŸ¬ ì„ íƒ í•  ìˆ˜ ìˆìŒ
 
 #define UP 72
 #define DOWN 80
@@ -18,13 +18,13 @@ enum ColorType {
 #define RIGHT 77
 #define ENTER 13 
 
-#define T_height 9
-#define T_width 30 // Å¸ÀÌÆ² ½ÃÀÛ ÁÂÇ¥
-#define M_height 25
-#define M_width 40 // ¸Ş´º ½ÃÀÛ ÁÂÇ¥
+#define T_height 1
+#define T_width 20 // íƒ€ì´í‹€ ì‹œì‘ ì¢Œí‘œ
+#define M_height 20
+#define M_width 40 // ë©”ë‰´ ì‹œì‘ ì¢Œí‘œ
 #define Title_Speed 35
 const int M_num = 4;
-int Selected_Menu_Num = 0; // ¸Ş´º ³Ñ¹ö
+int Selected_Menu_Num = 0; // ë©”ë‰´ ë„˜ë²„
 
 void PrintTitle();
 void PrintMenu(int n);
@@ -35,32 +35,32 @@ void textcolor(int color);
 
 
 int main() {
-    console(); // ÄÜ¼Ö Å©±â ÁöÁ¤
+    console(); // ì½˜ì†” í¬ê¸° ì§€ì •
     removeCursor();
     int todo = -1;
 
     while (1) {
         switch (todo) {
-        case -1: // ½ÃÀÛÈ­¸é
+        case -1: // ì‹œì‘í™”ë©´
             todo = ShowTitle();
-            system("cls"); // È­¸é Áö¿ì±â
+            system("cls"); // í™”ë©´ ì§€ìš°ê¸°
             break;
-        case 0: // ½º³×ÀÌÅ© °ÔÀÓ
+        case 0: // ìŠ¤ë„¤ì´í¬ ê²Œì„
             snake();
             getch();
             system("cls");
             break;
-        case 1: // Å×Æ®¸®½º °ÔÀÓ
+        case 1: // í…ŒíŠ¸ë¦¬ìŠ¤ ê²Œì„
             tetris();
             getch();
             system("cls");
             break;
-        case 2: // Æ½ÅÃÅä °ÔÀÓ
+        case 2: // í‹±íƒí†  ê²Œì„
             tictactoe();
             getch();
             system("cls");
             break;
-        case 3: // Á¾·á
+        case 3: // ì¢…ë£Œ
             return 0;
         }
         system("cls");
@@ -91,17 +91,51 @@ int ShowTitle() {
     return select_m;
 }
 void PrintTitle() {
-    // ½ÃÀÛ È­¸é µğÀÚÀÎ
-    // ³ªÁß¿¡ ²Ù¹Ì°Ú½À´Ï´Ù.
+    setCurrentCursorPos(T_width, T_height);
+    printf("      _=====_                               _=====_\n");
+    setCurrentCursorPos(T_width, T_height + 1);
+    printf("     / _____ \\                             / _____ \\\n");
+    setCurrentCursorPos(T_width, T_height + 2);
+    printf("   +.-'_____'-.---------------------------.-'_____'-.+\n");
+    setCurrentCursorPos(T_width, T_height + 3);
+    printf("  /   |     |  '.                       .'  |  _  |   \\\n");
+    setCurrentCursorPos(T_width, T_height + 4);
+    printf(" / ___| /|\\ |___ \\                     / ___| /_\\ |___ \\\n");
+    setCurrentCursorPos(T_width, T_height + 5);
+    printf("/ |      |      | ;  __           _   ; | _         _ | ;\n");
+    setCurrentCursorPos(T_width, T_height + 6);
+    printf("| | <---   ---> | | |__|         |_:> | ||_|       (_)| |\n");
+    setCurrentCursorPos(T_width, T_height + 7);
+    printf("| |___   |   ___| ;SELECT       START ; |___       ___| ;\n");
+    setCurrentCursorPos(T_width, T_height + 8);
+    printf("|\\    | \\|/ |    /  _     ___      _   \\    | (X) |    /|\n");
+    setCurrentCursorPos(T_width, T_height + 9);
+    printf("| \\   |_____|  .','\" \"', |___|  ,'\" \"', '.  |_____|  .' |\n");
+    setCurrentCursorPos(T_width, T_height + 10);
+    printf("|  '-.______.-' /       \/RETRO/       \\  '-._____.-'   |\n");
+    setCurrentCursorPos(T_width, T_height + 11);
+    printf("|               |       |------|       |                |\n");
+    setCurrentCursorPos(T_width, T_height + 12);
+    printf("|              /\\       /      \\       /\\               |\n");
+    setCurrentCursorPos(T_width, T_height + 13);
+    printf("|             /  '.___.'        '.___.'  \\              |\n");
+    setCurrentCursorPos(T_width, T_height + 14);
+    printf("|            /                            \\             |\n");
+    setCurrentCursorPos(T_width, T_height + 15);
+    printf(" \\          /                              \\           /\n");
+    setCurrentCursorPos(T_width, T_height + 16);
+    printf("  \\________/                                \\_________/\n");
 }
+
+
 void PrintMenu(int n) {
     char MenuArr[4][10] = { "SNAKE", "TETRIS", "TICTACTOE", "EXIT " };
-    // °¢ °ÔÀÓ µé¾î°¥ ¼ö ÀÖµµ·Ï
+    // ê° ê²Œì„ ë“¤ì–´ê°ˆ ìˆ˜ ìˆë„ë¡
     for (int i = 0; i < 4; i++) {
         if (n == i) {
             textcolor(darkSkyBlue);
             setCurrentCursorPos(M_width, M_height + i * 2);
-            printf(">>"); // È­»ìÇ¥·Î ¼±ÅÃ
+            printf(">>"); // í™”ì‚´í‘œë¡œ ì„ íƒ
         }
         else {
             textcolor(GRAY); 
@@ -127,19 +161,19 @@ int SelectMenu() {
             switch (key) {
             case DOWN:
                 Delete_Menu();
-                Selected_Menu_Num++; // ¾Æ·¡·Î ³»¸®¸é ¸Ş´º ³Ñ¹ö up
-                if (Selected_Menu_Num > M_num - 1) // ¸Ç¾Æ·¡·Î ³»·ÈÀ» °æ¿ì 
-                    Selected_Menu_Num = 0; // ¸ÇÀ§·Î
+                Selected_Menu_Num++; // ì•„ë˜ë¡œ ë‚´ë¦¬ë©´ ë©”ë‰´ ë„˜ë²„ up
+                if (Selected_Menu_Num > M_num - 1) // ë§¨ì•„ë˜ë¡œ ë‚´ë ¸ì„ ê²½ìš° 
+                    Selected_Menu_Num = 0; // ë§¨ìœ„ë¡œ
                 PrintMenu(Selected_Menu_Num);
                 break;
             case UP:
                 Delete_Menu();
                 Selected_Menu_Num--;
-                if (Selected_Menu_Num < 0) //¸ÇÀ§·Î ¿Ã·ÈÀ» °æ¿ì
-                    Selected_Menu_Num = M_num - 1; // °¡Àå ¾Æ·¡·Î
+                if (Selected_Menu_Num < 0) //ë§¨ìœ„ë¡œ ì˜¬ë ¸ì„ ê²½ìš°
+                    Selected_Menu_Num = M_num - 1; // ê°€ì¥ ì•„ë˜ë¡œ
                 PrintMenu(Selected_Menu_Num);
                 break;
-            case ENTER: // ¿£ÅÍ Ä¡¸é °ÔÀÓ ¼±ÅÃ
+            case ENTER: // ì—”í„° ì¹˜ë©´ ê²Œì„ ì„ íƒ
                 return arrM[Selected_Menu_Num];
             }
         }
