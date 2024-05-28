@@ -9,12 +9,8 @@
 #include "tetrisheader.h"
 
 int tetris() {
-    int i;
-    srand((unsigned)time(NULL));
-    removeCursor(); //커서를 숨김 
-    system("cls");
-    reset_main_block(); // 메인 블록 초기화
-    draw_main_block(); // 메인 블록 그리기
-    game_info();  // 게임 정보
+    srand((unsigned int)time(NULL)); // 난수 생성
+    removeCursor();  // 커서 제거
+    DrawGameBoard(); // 게임 보드 그리기
 	return 0;
 }

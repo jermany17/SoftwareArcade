@@ -9,87 +9,52 @@
 #include <conio.h>
 #include <stdbool.h>
 
-int score = 0;  // 현재 점수 
-int best_score = 0; // 최고 점수
+#define GBOARD_WIDTH 10   // 게임 보드의 너비
+#define GBOARD_HEIGHT 20  // 게임 보드의 높이
+#define GBOARD_ORIGIN_X 4 // 게임 보드의 x축
+#define GBOARD_ORIGIN_Y 2 // 게임 보드의 y축
 
-int main_block[23][11]; // 게임판 정보
-int main_copy[23][11];  // 게임판 정보
+int gameBoardInfo[GBOARD_HEIGHT + 1][GBOARD_WIDTH + 2]; // 게임 보드 상태
+void DrawGameBoard(); // 게임 보드를 그리는 함수
 
-void reset_main_block(void) { // 메인 블록 초기화
-    int i, j;
+int score = 0, best_score = 0; // 게임 점수, 최고 점수
 
-    for (i = 0; i < 23; i++) {       // 게임판 초기화  
-        for (j = 0; j < 11; j++) {
-            main_block[i][j] = 0;
-            main_copy[i][j] = 100;
-        }
-    }
-    for (j = 0; j < 11; j++) {      // 바닥
-        main_block[23 - 1][j] = 1;
-    }
-    for (j = 1; j < 11; j++) {      // 천장 
-        main_block[3][j] = -1;
-    }
-    for (i = 1; i < 23 - 1; i++) {  // 좌우
-        main_block[i][0] = 1;
-        main_block[i][11 - 1] = 1;
-    }
-}
+void DrawGameBoard() { // 게임 보드를 그리는 함수
+	int x, y;
+	for (y = 0; y <= GBOARD_HEIGHT; y++) {
+		setCurrentCursorPos(GBOARD_ORIGIN_X, GBOARD_ORIGIN_Y + y);
+		if (y == GBOARD_HEIGHT)
+			printf("┗"); // 왼쪽 아래 모서리
+		else
+			printf("┃"); // 왼쪽 벽
+	}
+	for (y = 0; y <= GBOARD_HEIGHT; y++) {
+		setCurrentCursorPos(GBOARD_ORIGIN_X + (GBOARD_WIDTH + 1) * 2, GBOARD_ORIGIN_Y + y);
+		if (y == GBOARD_HEIGHT)
+			printf("┛"); // 오른쪽 아래 모서리
+		else
+			printf("┃"); // 오른쪽 벽
+	}
+	for (x = 1; x < GBOARD_WIDTH + 1; x++) {
+		setCurrentCursorPos(GBOARD_ORIGIN_X + x * 2, GBOARD_ORIGIN_Y + GBOARD_HEIGHT);
+		printf("━"); // 아래 벽
+	}
+	setCurrentCursorPos(GBOARD_ORIGIN_X + GBOARD_WIDTH, 0);
 
-void draw_main_block(void) { // 메인 블록 그리기
-    int i, j;
+	// 게임 보드 배열 초기화
+	for (x = 0; x < GBOARD_WIDTH + 2; x++) {
+		gameBoardInfo[GBOARD_HEIGHT][x] = 2; // 바닥을 2로 설정
+	}
+	for (y = 0; y < GBOARD_HEIGHT; y++) {
+		gameBoardInfo[y][0] = 2;				// 왼쪽 벽을 2로 설정
+		gameBoardInfo[y][GBOARD_WIDTH + 1] = 2; // 오른쪽 벽을 2로 설정
+	}
 
-    for (j = 1; j < 11 - 1; j++) { // 천장은 새로운블럭이 지나가면 다시 그려줌 
-        if (main_block[3][j] == 0) main_block[3][j] = -1;
-    }
-    for (i = 0; i < 23; i++) {
-        for (j = 0; j < 11; j++) {
-            if (main_copy[i][j] != main_block[i][j]) {
-                // mina_copy와 비교 후 값이 달라진 부분만 새로 그림
-
-                int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // 민트
-                textcolor(mintColor);// 색상 지정
-                setCurrentCursorPos(2 * (3 + j), 1 + i);
-
-                switch (main_block[i][j]) {
-                case 0:  // 빈칸
-                    printf("  ");
-                    break;
-                case -1: // 천장 
-                    printf(". ");
-                    break;
-                case 1:  // 벽 
-                    printf("▩");
-                    break;
-                case 2:  // 도착한 블럭  
-                    printf("□");
-                    break;
-                case -2: // 움직이는 블럭  
-                    printf("■");
-                    break;
-                }
-            }
-        }
-        int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; // 색상 원래대로
-        textcolor(defaultColor); // 색상 지정
-    }
-    for (i = 0; i < 23; i++) { //게임판을 그린 후 main_cpy에 복사  
-        for (j = 0; j < 11; j++) {
-            main_copy[i][j] = main_block[i][j];
-        }
-    }
-}
-
-void game_info(void) { // 게임 정보      
-    int y = 3;
-    setCurrentCursorPos(2 * 17, y + 6); printf("      SCORE : %6d", score);       // 현재 점수
-    setCurrentCursorPos(2 * 17, y + 8); printf(" BEST SCORE : %6d", best_score);  // 최고 점수
-
-    //조작법
-    setCurrentCursorPos(2 * 17, y + 12); printf("  ↑   : 모양 바꾸기");
-    setCurrentCursorPos(2 * 17, y + 13); printf("←   → : 블록 이동");
-    setCurrentCursorPos(2 * 17, y + 14); printf("  ↓   : Soft Drop");
-    setCurrentCursorPos(2 * 17, y + 15); printf("SPACE : Hard Drop");
-    setCurrentCursorPos(2 * 17, y + 17); printf("P     : 일시정지");
-    setCurrentCursorPos(2 * 17, y + 18); printf("ESC   : 종료");
+	// 게임 정보, 조작 설명
+	setCurrentCursorPos(34, 9);  printf("      SCORE : %6d", score);       // 현재 점수
+	setCurrentCursorPos(34, 12); printf(" BEST SCORE : %6d", best_score);  // 최고 점수
+	setCurrentCursorPos(34, 15); printf("  ↑   : 모양 바꾸기");
+	setCurrentCursorPos(34, 16); printf("←   → : 블록 이동");
+	setCurrentCursorPos(34, 17); printf("  ↓   : Soft Drop");
+	setCurrentCursorPos(34, 18); printf("SPACE : Hard Drop");
 }
