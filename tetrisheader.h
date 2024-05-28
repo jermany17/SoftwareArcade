@@ -12,44 +12,32 @@
 int main_block[23][11]; // 게임판 정보
 int main_copy[23][11];  // 게임판 정보
 
-void hideCursor(void) { // 커서를 숨기는 함수
-    CONSOLE_CURSOR_INFO CurInfo;
-    CurInfo.dwSize = 1;
-    CurInfo.bVisible = FALSE;
-    SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &CurInfo);
-}
 
-void gotoxy(int x, int y) { // 커서의 위치를 이동
-    COORD coord;
-    coord.X = 2 * x;
-    coord.Y = y;
-    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
-}
 
-void setColor(int color) {
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
-}
+
+
+
 
 void firsttitle(void) { // 첫 화면 
     int x = 5;  // x좌표 
     int y = 4;  // y좌표 
 
     int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // 민트
-    setColor(mintColor); // 제목 색상 지정
+    textcolor(mintColor); // 제목 색상 지정
 
-    gotoxy(x, y + 0); printf("■■■■■■  ■■■■■■  ■■■■■■  ■■■■■■  ■■■■■■   ■■■■■"); Sleep(100);
-    gotoxy(x, y + 1); printf("  ■■    ■■        ■■    ■■  ■■    ■■    ■■■"); Sleep(100);
-    gotoxy(x, y + 2); printf("  ■■    ■■        ■■    ■■■■■■    ■■      ■■■"); Sleep(100);
-    gotoxy(x, y + 3); printf("  ■■    ■■■■■■    ■■    ■■ ■■     ■■       ■■■"); Sleep(100);
-    gotoxy(x, y + 4); printf("  ■■    ■■        ■■    ■■  ■■    ■■        ■■■"); Sleep(100);
-    gotoxy(x, y + 5); printf("  ■■    ■■        ■■    ■■  ■■    ■■       ■■■"); Sleep(100);
-    gotoxy(x, y + 6); printf("  ■■    ■■■■■■    ■■    ■■  ■■  ■■■■■■  ■■■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 0); printf("■■■■■■  ■■■■■■  ■■■■■■  ■■■■■■  ■■■■■■   ■■■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 1); printf("  ■■    ■■        ■■    ■■  ■■    ■■    ■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 2); printf("  ■■    ■■        ■■    ■■■■■■    ■■      ■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 3); printf("  ■■    ■■■■■■    ■■    ■■ ■■     ■■       ■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 4); printf("  ■■    ■■        ■■    ■■  ■■    ■■        ■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 5); printf("  ■■    ■■        ■■    ■■  ■■    ■■       ■■■"); Sleep(100);
+    setCurrentCursorPos(2*x, y + 6); printf("  ■■    ■■■■■■    ■■    ■■  ■■  ■■■■■■  ■■■■■"); Sleep(100);
 
     int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE;
-    setColor(defaultColor); // 안내 문구 색상 지정
+    textcolor(defaultColor); // 안내 문구 색상 지정
 
-    gotoxy(x, y + 11); printf("게임을 시작하려면 아무키나 누르세요"); // 안내 문구(한글)
-    gotoxy(x, y + 13); printf("P R E S S  A N Y  K E Y"); // 안내 문구(ENG)
+    setCurrentCursorPos(x, y + 11); printf("게임을 시작하려면 아무키나 누르세요"); // 안내 문구(한글)
+    setCurrentCursorPos(x, y + 13); printf("P R E S S  A N Y  K E Y"); // 안내 문구(ENG)
     while (_kbhit()) _getch(); // 모든 키 값을 버림
 
     _getch(); // 키 입력을 기다림
@@ -88,8 +76,8 @@ void draw_main_block(void) { // 메인 블록 그리기
                 // mina_copy와 비교 후 값이 달라진 부분만 새로 그림
 
                 int mintColor = FOREGROUND_GREEN | FOREGROUND_BLUE | FOREGROUND_INTENSITY; // 민트
-                setColor(mintColor);// 색상 지정
-                gotoxy(3 + j, 1 + i);
+                textcolor(mintColor);// 색상 지정
+                setCurrentCursorPos(2*(3 + j), 1 + i);
 
                 switch (main_block[i][j]) {
                 case 0:  // 빈칸
@@ -111,7 +99,7 @@ void draw_main_block(void) { // 메인 블록 그리기
             }
         }
         int defaultColor = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; // 색상 원래대로
-        setColor(defaultColor); // 색상 지정
+        textcolor(defaultColor); // 색상 지정
     }
     for (i = 0; i < 23; i++) { //게임판을 그린 후 main_cpy에 복사  
         for (j = 0; j < 11; j++) {
