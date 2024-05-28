@@ -213,6 +213,14 @@ void ProcessKeyInput() // 키 입력을 처리하는 함수
 		Sleep(speed);
 	}
 }
+int IsGameOver(void) // 게임 오버 여부를 확인하는 함수
+{
+	if (DetectCollision(posX, posY, blockModel[block_id]) == 1) // 충돌하지 않으면
+	{
+		return 1; // 게임 지속
+	}
+	else return 0; // 충돌하면 게임 종료
+}
 void RedrawBlocks(void) // 게임 보드를 다시 그리는 함수
 {
 	int x, y;
