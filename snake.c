@@ -61,6 +61,8 @@ void shiftLeft();
 void shiftRight();
 void pausePlay();
 
+int detectCollision(int currentPosX, int currentPosY);
+
 int snake() {
     drawBoard();
 
@@ -357,4 +359,11 @@ void pausePlay() { // pauses game when space is pressed
         }
         Sleep(speed);
     }
+}
+
+int detectCollision(int posX, int posY) { // detects collision by inspecting next head position
+    int arrX = (posX - GBOARD_ORIGIN_X) / 2;
+    int arrY = (posY - GBOARD_ORIGIN_Y);
+
+    return gameBoardInfo[arrY][arrX];
 }
