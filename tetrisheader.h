@@ -248,3 +248,34 @@ void AddBlockToBoard(void) // 현재 블록을 게임 보드에 추가하는 함수
 		}
 	}
 }
+void RemoveFillUpLine(void) // 가득 찬 줄을 제거하는 함수
+{
+	int line, x, y;
+	for (y = GBOARD_HEIGHT - 1; y > 0; y--) {
+		for (x = 1; x < GBOARD_WIDTH + 1; x++) {
+			if (gameBoardInfo[y][x] != 2) // 가득 찬 줄에 빈 칸이 있으면
+				break; // 검사 중단
+		}
+		if (x == (GBOARD_WIDTH + 1)) { // 한 줄이 가득 찬 경우
+			for (line = 0; y - line > 0; line++) {
+				// 아래에서부터 줄을 당겨옴
+				memcpy(&gameBoardInfo[y - line][1],
+					&gameBoardInfo[(y - line) - 1][1], GBOARD_WIDTH * sizeof(int)); // 복사
+
+			}
+			y++; // 검사한 줄을 다시 검사
+		}
+	}
+	// 블록 ID가 28인 경우(공백)
+	if (block_id == 28) {
+		int x, y;
+		int arrCurX = (posX - GBOARD_ORIGIN_X) / 2;
+		int arrCurY = posY - GBOARD_ORIGIN_Y;
+		for (y = arrCurY; y < arrCurY + 4; y++) {
+			for (x = 0; x < 4; x++) {
+				gameBoardInfo[y][arrCurX + x] = 0; // 블록을 공백으로 설정
+			}
+		}
+	}
+	RedrawBlocks(); // 게임 보드 다시 그림
+}
