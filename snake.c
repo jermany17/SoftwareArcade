@@ -41,6 +41,7 @@ int maxSpeed = 25;
 int speedScore = 50;
 int currentScore = 0;
 
+void stage();
 
 void initSnake();
 void addBody();
@@ -64,6 +65,26 @@ int snake() {
     drawBoard();
 
 	return 0;
+}
+
+void stage() {
+    drawBoard();
+    initSnake();
+    addBall();
+
+    int key = 0;
+
+    while (1) {
+        if (isGameOver()) break;
+
+        while (1) {
+            if (moogiMove() == 0) break;
+
+            inPlayKeyInput();
+        }
+    }
+
+    gameOver();
 }
 
 void initSnake() {
