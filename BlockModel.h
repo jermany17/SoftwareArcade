@@ -353,14 +353,14 @@ char blockModel[][4][4] =
                         {1, 0, 0, 1},
 
                         {1, 0, 0, 1} }
-
-
-
-
-
-
-
-
-
 };
+COORD getCurrentCursorPos2() {
+    COORD curPos;
+    CONSOLE_SCREEN_BUFFER_INFO curInfo;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
+    curPos.X = curInfo.dwCursorPosition.X;
+    curPos.Y = curInfo.dwCursorPosition.Y;
+
+    return curPos;
+}
 
