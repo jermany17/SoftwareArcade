@@ -26,6 +26,16 @@ void removeCursor() { // remove cursor blinking
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &curInfo);
 }
 
+void gotoxy(int x, int y, char* s) {
+    COORD pos = { x,y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+    printf("%s", s);
+}
+
+void setTextColor(int colorNum) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), colorNum);
+}
+
 void gotoxycol(int x, int y, int col, char* s) {
     COORD pos = { x,y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);

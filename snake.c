@@ -43,6 +43,15 @@ int currentScore = 0;
 
 
 void initSnake();
+void addBody();
+void deleteBody();
+
+COORD nextHeadPos();
+void drawHead(COORD headPos);
+void eraseTail();
+Snake* getNode(Snake* front, Snake* back, COORD position);
+int snakeMove();
+void getSomething();
 
 int snake() {
     drawBoard();
@@ -80,3 +89,152 @@ void initSnake() {
     gotoxy(tail->position.X, tail->position.Y, "¡Ü");
 }
 
+void addBody() {
+    if (length + 1 > maxLength) return;
+
+    length++;
+
+    COORD newTailPos = { tail->position.X, tail->position.Y };
+
+    switch (tail->direct) {
+        case LEFT:
+            newTailPos.X += 2; break;
+        case RIGHT:
+            newTailPos.X -= 2; break;
+        case UP:
+            newTailPos.Y++; break;
+        case DOWN:
+            newTailPos.Y--; break;
+        default:
+            break;
+    }
+    Snake* p = getNode(tail, NULL, newTailPos);
+    p->direct = tail->direct;
+    tail->back = p;
+    tail = p;
+
+    if (!detectCollision(tail->position.X, tail->position.Y)) {
+        int arrX = (tail->position.X - GBOARD_ORIGIN_X) / 2;
+        int arrY = tail->position.Y - GBOARD_ORIGIN_Y;
+        gameBoardInfo[arrY][arrX] = 2;
+    }
+}
+
+void deleteBody() {
+    if (length > minLength) { // only runs when length is longer than the minimum length
+        eraseTail();
+        length--;
+    }
+}
+
+COORD nextHeadPos() { // returns the next position of the head
+    COORD curPos;
+    curPos.X = head->position.X;
+    curPos.Y = head->position.Y;
+
+    switch (direction) {
+        case 0:
+            curPos.Y--;
+            break;
+        case 1:
+            curPos.Y++;
+            break;
+        case 2:
+            curPos.X -= 2;
+            break;
+        case 3:
+            curPos.X += 2;
+            break;
+        default:
+            break;
+    }
+
+    return curPos;
+}
+
+void drawHead(COORD headPos) { // adds a front node as Snake moves
+    Snake* node = getNode(NULL, head, headPos);
+    head->front = node;
+    head = head->front;
+
+    switch (direction) {
+    case 0:
+        head->direct = UP;
+        break;
+    case 1:
+        head->direct = DOWN;
+        break;
+    case 2:
+        head->direct = LEFT;
+        break;
+    case 3:
+        head->direct = RIGHT;
+        break;
+    default:
+        head->direct = UP;
+        break;
+    }
+
+    setTextColor(15);
+
+    gotoxy(head->position.X, head->position.Y, "¡Ý");
+    gotoxy(head->back->position.X, head->back->position.Y, "¡Ü");
+
+    getSomething();
+
+    int arrX = (headPos.X - GBOARD_ORIGIN_X) / 2;
+    int arrY = (headPos.Y - GBOARD_ORIGIN_Y);
+    gameBoardInfo[arrY][arrX] = 2;
+}
+
+void eraseTail() { // erases end node as Snake moves
+    if (tail == NULL) return;
+
+    if (detectCollision(tail->position.X, tail->position.Y) == 2) {
+        int arrX = (tail->position.X - GBOARD_ORIGIN_X) / 2;
+        int arrY = (tail->position.Y - GBOARD_ORIGIN_Y);
+        gameBoardInfo[arrY][arrX] = 0;
+
+        COORD pos = { tail->position.X, tail->position.Y };
+        SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+        printf("  ");
+    }
+    Snake* pi = tail;
+    tail = tail->front;
+    tail->back = NULL;
+    free(pi);
+}
+
+Snake* getNode(Snake* front, Snake* back, COORD position) // create new Snake node
+{
+    Snake* node = (Snake*)malloc(sizeof(Snake));
+    node->front = front;
+    node->back = back;
+    node->position = position;
+
+    return node;
+}
+
+int snakeMove() {
+    COORD nextPos = nextHeadPos();
+
+    if (detectCollision(nextPos.X, nextPos.Y) == 1 || detectCollision(nextPos.X, nextPos.Y) == 2) {
+        if (heart > 0) { // when lives are remaining
+            waitToRecover();
+
+            return 1;
+        }
+        else return 0;
+    }
+
+    if (detectCollision(nextPos.X, nextPos.Y) != 13) {
+        drawHead(nextPos);      
+        eraseTail();
+    }
+
+    return 1;
+}
+
+void getSomething() {
+    countScore();
+}
