@@ -32,7 +32,7 @@ int direction = 3;
 int stage = 0;
 int stageBestScore = 0;
 int speed = 15;
-int dragonBallCount = 0;
+int ballCount = 0;
 int length = 3;
 int minLength = 2;
 int maxLength = 40;
@@ -41,7 +41,7 @@ int maxSpeed = 25;
 int speedScore = 50;
 int currentScore = 0;
 
-void stage();
+void stage1();
 
 void initSnake();
 void addBody();
@@ -62,6 +62,12 @@ void shiftRight();
 void pausePlay();
 
 int detectCollision(int currentPosX, int currentPosY);
+int isGameOver();
+void addBall();
+void showBall(int arrX, int arrY);
+void waitToRecover();
+
+void countScore();
 
 int snake() {
     drawBoard();
@@ -69,7 +75,7 @@ int snake() {
 	return 0;
 }
 
-void stage() {
+void stage1() {
     drawBoard();
     initSnake();
     addBall();
@@ -80,13 +86,11 @@ void stage() {
         if (isGameOver()) break;
 
         while (1) {
-            if (moogiMove() == 0) break;
+            if (snakeMove() == 0) break;
 
             inPlayKeyInput();
         }
     }
-
-    gameOver();
 }
 
 void initSnake() {
@@ -266,7 +270,7 @@ int snakeMove() {
 }
 
 void getSomething() {
-    countScore();
+    //countScore();
 }
 
 void inPlayKeyInput() { // registers player input
@@ -366,4 +370,111 @@ int detectCollision(int posX, int posY) { // detects collision by inspecting nex
     int arrY = (posY - GBOARD_ORIGIN_Y);
 
     return gameBoardInfo[arrY][arrX];
+}
+
+
+int isGameOver() { // game ends when detectCollision returns 1 or 2
+    COORD nextPos = nextHeadPos();
+    if (detectCollision(nextPos.X, nextPos.Y) == 1 || detectCollision(nextPos.X, nextPos.Y) == 2) return 1;
+    return 0;
+}
+
+void addBall() {
+    int ballX;
+    int ballY;
+
+    do {
+        ballX = (rand() % GBOARD_WIDTH) + GBOARD_ORIGIN_X; if (ballX % 2 == 1) ballX++;
+        ballY = (rand() % GBOARD_HEIGHT) + GBOARD_ORIGIN_Y;
+    } while (detectCollision(ballX, ballY));
+
+    int arrX = (ballX - GBOARD_ORIGIN_X) / 2;
+    int arrY = (ballY - GBOARD_ORIGIN_Y);
+    gameBoardInfo[arrY][arrX] = 3;
+    showBall(ballX, ballY); ballCount++;
+}
+
+void showBall(int x, int y) {
+    setTextColor(6);
+    gotoxy(x, y, "¡Û");
+    setTextColor(15);
+}
+
+
+void waitToRecover() {
+    int key, flag = 0;
+    gotoxycol(72, 23, 4, "PRESS TO CONTINUE!");
+    Snake* p = head->back;
+    COORD nextPos;
+
+    //speedDown();
+
+    for (int i = 0; i < 5; i++) {
+        for (int i = 0; ; i++) {
+            gotoxycol(p->position.X, p->position.Y, 15, "¡Û");
+            gotoxycol(p->position.X, p->position.Y, 15, "¡Û");
+            if (p->back == NULL) break;
+            p = p->back;
+        }
+        Sleep(300);
+        p = head->back;
+
+        for (int i = 0; ; i++) {
+            gotoxycol(p->position.X, p->position.Y, 15, "¡Ü");
+            if (p->back == NULL) break;
+            p = p->back;
+        }
+        Sleep(100);
+
+        for (int i = 0; i < speed; i++) {
+            if (_kbhit() != 0) {
+                key = _getch();
+
+                if (key == UP) {
+                    if (direction == 0 || direction == 1) continue;
+                    direction = 0;
+                    nextPos = nextHeadPos();
+                    drawHead(nextPos);
+                    eraseTail();
+                    flag = 1;
+                }
+                else if (key == DOWN) {
+                    if (direction == 0 || direction == 1) continue;
+                    direction = 1;
+                    nextPos = nextHeadPos();
+                    drawHead(nextPos);
+                    eraseTail();
+                    flag = 1;
+                }
+                else if (key == LEFT) {
+                    if (direction == 2 || direction == 3) continue;
+                    direction = 2;
+                    nextPos = nextHeadPos();
+                    drawHead(nextPos);
+                    eraseTail();
+                    flag = 1;
+                }
+                else if (key == RIGHT) {
+                    if (direction == 2 || direction == 3) continue;
+                    direction = 3;
+                    nextPos = nextHeadPos();
+                    drawHead(nextPos);
+                    eraseTail();
+                    flag = 1;
+                }
+                else if (key == SPACE) pausePlay();
+            }
+            Sleep(15); // adjust play speed
+        }
+        p = head->back;
+
+        if (flag == 1) break;
+    }
+    heart--;
+    drawLife();
+    gotoxycol(72, 23, 14, "                   ");
+    gotoxy(GBOARD_WIDTH + 3, GBOARD_HEIGHT + 5, "");
+    setTextColor(15);
+
+    if (flag == 0) return;
 }
