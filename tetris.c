@@ -8,14 +8,36 @@
 #include <stdbool.h>
 #include "tetrisheader.h"
 
+int posX = 12, posY = 0;
 int tetris() {
-    int i;
-    srand((unsigned)time(NULL));
-    removeCursor(); //커서를 숨김 
-    firsttitle(); // 첫 화면 
-    system("cls");
-    reset_main_block(); // 메인 블록 초기화
-    draw_main_block(); // 메인 블록 그리기
-    game_info();  // 게임 정보
-	return 0;
+    speed = 30; // 블록 이동 속도
+    srand((unsigned int)time(NULL)); // 난수 생성
+    removeCursor();  // 커서 제거
+    DrawGameBoard(); // 게임 보드 그리기
+
+    // 메인 게임 루프
+    while (1) {
+        if (IsGameOver() == 0) { // 게임 오버 확인
+            break;
+        }
+        while (1)
+        {
+            if (BlockDown() == 0) // 블록이 더 이상 내려갈 수 없는 경우
+            {
+                AddBlockToBoard();  // 블록을 게임 보드에 추가
+                RemoveFillUpLine(); // 가득 찬 줄 제거
+                DrawGameBoard(); // 게임 보드 그리기
+                break;
+            }
+            ProcessKeyInput(); // 키 입력 처리
+        }
+        // 새로운 블록 생성 위치
+        posX = 6; posY = 2;
+        block_id = (rand() % 7) * 4; // 새로운 블록 랜덤 생성
+    }
+    // 게임 오버 메시지 출력
+    setCurrentCursorPos(14, 0);
+    puts("GameOver");
+    getchar();
+    return 0;
 }
