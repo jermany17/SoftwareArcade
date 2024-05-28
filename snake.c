@@ -16,7 +16,6 @@
 #define LEFT 75
 #define RIGHT 77
 #define SPACE 32
-#define GB 120 // x for go back
 
 typedef struct Snake { // create Snake
     struct Snake* front;
@@ -28,6 +27,20 @@ typedef struct Snake { // create Snake
 Snake* head = NULL;
 Snake* body = NULL;
 Snake* tail = NULL;
+
+int direction = 3;
+int stage = 0;
+int stageBestScore = 0;
+int speed = 15;
+int dragonBallCount = 0;
+int length = 3;
+int minLength = 2;
+int maxLength = 40;
+int minSpeed = 5;
+int maxSpeed = 25;
+int speedScore = 50;
+int currentScore = 0;
+
 
 void initSnake();
 
