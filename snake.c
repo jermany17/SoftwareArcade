@@ -70,7 +70,16 @@ void waitToRecover();
 void countScore();
 
 int snake() {
-    drawBoard();
+    console();
+    removeCursor();
+
+    while (1) {
+        system("cls");
+        //clearScreen();
+        //reset();
+        stage1();
+    }
+    getch();
 
 	return 0;
 }
