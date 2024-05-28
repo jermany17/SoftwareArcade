@@ -213,3 +213,38 @@ void ProcessKeyInput() // 키 입력을 처리하는 함수
 		Sleep(speed);
 	}
 }
+void RedrawBlocks(void) // 게임 보드를 다시 그리는 함수
+{
+	int x, y;
+	int cursX, cursY;
+	for (y = 0; y < GBOARD_HEIGHT; y++)
+	{
+		for (x = 1; x < GBOARD_WIDTH + 1; x++)
+		{
+			cursX = x * 2 + GBOARD_ORIGIN_X;
+			cursY = y + GBOARD_ORIGIN_Y;
+			setCurrentCursorPos(cursX, cursY); // 커서 이동
+			if (gameBoardInfo[y][x] == 2)
+			{
+				printf("■"); // 블록 그리기
+			}
+			else { printf("  "); } // 빈 공간 그리기
+		}
+	}
+}
+void AddBlockToBoard(void) // 현재 블록을 게임 보드에 추가하는 함수
+{
+	int x, y, arrCurX, arrCurY;
+	for (y = 0; y < 4; y++)
+	{
+		for (x = 0; x < 4; x++)
+
+		{
+			arrCurX = (posX - GBOARD_ORIGIN_X) / 2;
+			arrCurY = posY - GBOARD_ORIGIN_Y;
+
+			if (blockModel[block_id][y][x] == 1) // 블록이 있는 부분을
+				gameBoardInfo[arrCurY + y][arrCurX + x] = 2; // 게임 보드에 추가
+		}
+	}
+}
