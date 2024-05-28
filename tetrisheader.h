@@ -104,3 +104,17 @@ void draw_main_block(void) { // 메인 블록 그리기
         }
     }
 }
+
+void game_info(void) { // 게임 정보      
+    int y = 3;
+    setCurrentCursorPos(2 * 17, y + 6); printf("      SCORE : %6d", score);       // 현재 점수
+    setCurrentCursorPos(2 * 17, y + 8); printf(" BEST SCORE : %6d", best_score);  // 최고 점수
+
+    //조작법
+    setCurrentCursorPos(2 * 17, y + 12); printf("  ↑   : 모양 바꾸기");
+    setCurrentCursorPos(2 * 17, y + 13); printf("←   → : 블록 이동");
+    setCurrentCursorPos(2 * 17, y + 14); printf("  ↓   : Soft Drop");
+    setCurrentCursorPos(2 * 17, y + 15); printf("SPACE : Hard Drop");
+    setCurrentCursorPos(2 * 17, y + 17); printf("P     : 일시정지");
+    setCurrentCursorPos(2 * 17, y + 18); printf("ESC   : 종료");
+}

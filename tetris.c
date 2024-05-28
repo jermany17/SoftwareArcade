@@ -16,5 +16,6 @@ int tetris() {
     system("cls");
     reset_main_block(); // 메인 블록 초기화
     draw_main_block(); // 메인 블록 그리기
+    game_info();  // 게임 정보
 	return 0;
 }
