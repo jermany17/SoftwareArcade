@@ -16,6 +16,12 @@ int posX, posY; // 커서 위치
 #define GBOARD_ORIGIN_X 4 // 게임 보드의 x축
 #define GBOARD_ORIGIN_Y 2 // 게임 보드의 y축
 
+#define LEFT 75   // LEFT 키
+#define RIGHT 77  // RIGHT 키
+#define UP 72 // UP 키
+#define DOWN 80 // DOWN 키
+#define SPACE 32 // SPACE 키
+
 int block_id;
 int gameBoardInfo[GBOARD_HEIGHT + 1][GBOARD_WIDTH + 2]; // 게임 보드 상태
 void ShowBlock(char blockInfo[4][4]);   // 블록을 화면에 표시하는 함수                      
@@ -27,6 +33,13 @@ void ShiftLeft(void);  // 블록을 왼쪽으로 이동시키는 함수
 int BlockDown();       // 블록을 아래로 한 칸 이동시키는 함수
 void RotateBlock();    // 블록을 회전시키는 함수
 void SpaceDown();      // 블록을 바닥까지 한 번에 내리는 함수
+
+int speed; //  속도
+void ProcessKeyInput(); // 키 입력을 처리하는 함수
+int IsGameOver(void); // 게임 오버 여부를 확인하는 함수
+void RedrawBlocks(void); // 게임 보드를 다시 그리는 함수
+void AddBlockToBoard(void); // 현재 블록을 게임 보드에 추가하는 함수
+void RemoveFillUpLine(void); // 가득 찬 줄을 제거하는 함수
 
 int score = 0, best_score = 0; // 게임 점수, 최고 점수
 
@@ -164,3 +177,39 @@ void SpaceDown()  // 블록을 바닥까지 한 번에 내리는 함수
 	while (BlockDown()); // 블록이 더 이상 내려갈 수 없을 때까지 계속 내림
 }
 
+void ProcessKeyInput() // 키 입력을 처리하는 함수
+{
+	int i, key;
+	for (i = 0; i < 20; i++)
+	{
+		if (_kbhit() != 0) // 키 입력이 있는지 확인
+		{
+			key = _getch(); // 키 입력을 받아옴
+			switch (key)
+			{
+			case LEFT:  // 왼쪽 
+				ShiftLeft();  // 블록 왼쪽 이동
+				break;
+			case RIGHT: // 오른쪽
+				ShiftRight(); // 블록 오른쪽 이동
+				break;
+			case UP:    // 위
+				RotateBlock(); // 블록 회전
+				break;
+			case DOWN:  // 아래
+				if (DetectCollision(posX, posY + 1, blockModel[block_id])) // 블록이 한 칸 아래로 이동 가능한지 확인
+				{
+					DeleteBlock(blockModel[block_id]); // 현재 위치의 블록 지움
+					posY += 1; // 블록의 Y 위치를 한 칸 아래로 이동
+					setCurrentCursorPos(posX, posY); // 커서를 새로운 블록 위치로 이동
+					ShowBlock(blockModel[block_id]); // 새로운 위치에 블록을 표시
+				}
+				break;
+			case SPACE: // 스페이스바
+				SpaceDown();   // 블록 하드 드롭
+				break;
+			}
+		}
+		Sleep(speed);
+	}
+}
