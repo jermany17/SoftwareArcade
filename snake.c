@@ -53,6 +53,13 @@ Snake* getNode(Snake* front, Snake* back, COORD position);
 int snakeMove();
 void getSomething();
 
+void inPlayKeyInput();
+void shiftUp();
+void shiftDown();
+void shiftLeft();
+void shiftRight();
+void pausePlay();
+
 int snake() {
     drawBoard();
 
@@ -237,4 +244,96 @@ int snakeMove() {
 
 void getSomething() {
     countScore();
+}
+
+void inPlayKeyInput() { // registers player input
+    int i, key;
+    int s = speed; if (stage == 5) s *= 2;
+    for (i = 0; i < s; i++) {
+        if (_kbhit() != 0) {
+            key = _getch();
+            switch (key)
+                {
+                case UP:
+                    shiftUp();
+                    break;
+                case DOWN:
+                    shiftDown();
+                    break;
+                case LEFT:
+                    shiftLeft();
+                    break;
+                case RIGHT:
+                    shiftRight();
+                    break;
+                case SPACE:
+                    pausePlay();
+                    break;
+                default:
+                    break;
+            }
+        }
+        Sleep(15); // adjusts game play speed
+    }
+}
+
+void shiftUp() { // when the up arrow key is pressed
+    // checks for collision
+    if (direction == 0 || direction == 1) return;
+
+    COORD nextPos = nextHeadPos();
+
+    if (detectCollision(nextPos.X, nextPos.Y) == 1) return;
+
+    // updates the direction, redraws the head and the tail
+    direction = 0;
+    drawHead(nextPos);
+    eraseTail();
+}
+
+void shiftDown() { // when the down arrow key is pressed
+    if (direction == 0 || direction == 1) return;
+
+    COORD nextPos = nextHeadPos();
+
+    if (detectCollision(nextPos.X, nextPos.Y) == 1) return;
+
+    direction = 1;
+    drawHead(nextPos);
+    eraseTail();
+}
+
+void shiftLeft() { // when the left arrow key is pressed
+    if (direction == 2 || direction == 3) return;
+
+    COORD nextPos = nextHeadPos();
+
+    if (detectCollision(nextPos.X, nextPos.Y) == 1) return;
+
+    direction = 2;
+    drawHead(nextPos);
+    eraseTail();
+}
+
+void shiftRight() { //when the right arrow key is pressed
+    if (direction == 2 || direction == 3) return;
+
+    COORD nextPos = nextHeadPos();
+
+    if (detectCollision(nextPos.X, nextPos.Y) == 1) return;
+
+    direction = 3;
+    drawHead(nextPos);
+    eraseTail();
+}
+
+void pausePlay() { // pauses game when space is pressed
+    while (1) {
+        if (_kbhit() != 0) {
+            int key = _getch();
+
+            if (key == SPACE) break;
+        }
+        Sleep(speed);
+    }
 }
