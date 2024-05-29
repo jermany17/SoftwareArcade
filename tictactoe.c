@@ -11,7 +11,7 @@
 #define GBOARD_HEIGHT 12
 
 // starting point of gameboard
-#define GBOARD_ORIGIN_X 28
+#define GBOARD_ORIGIN_X 18
 #define GBOARD_ORIGIN_Y 8
 
 
@@ -29,7 +29,7 @@ int tictactoe() {
 
 void printBoard() {
     // game title
-    gotoxycol(55, 2, 14, "¡Ú Tic Tac Toe ¡Ú");
+    gotoxycol(45, 2, 14, "¡Ú Tic Tac Toe ¡Ú");
     // draw game board
     for (int y = 0; y <= GBOARD_HEIGHT; y++) {
         if (y == 0) gotoxycol(GBOARD_ORIGIN_X, GBOARD_ORIGIN_Y + y, 14, "¡Ú");
