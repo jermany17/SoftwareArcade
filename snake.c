@@ -39,9 +39,9 @@ int maxLength = 40;
 int minSpeed = 5;
 int maxSpeed = 25;
 int speedScore = 50;
-int currentScore = 0;
 
 void stage1();
+void reset();
 
 void initSnake();
 void addBody();
@@ -60,6 +60,8 @@ void shiftDown();
 void shiftLeft();
 void shiftRight();
 void pausePlay();
+void speedUp();
+void speedDown();
 
 int detectCollision(int currentPosX, int currentPosY);
 int isGameOver();
@@ -75,8 +77,8 @@ int snake() {
 
     while (1) {
         system("cls");
-        //clearScreen();
-        //reset();
+        clearScreen();
+        reset();
         stage1();
     }
     getch();
@@ -279,7 +281,7 @@ int snakeMove() {
 }
 
 void getSomething() {
-    //countScore();
+    countScore();
 }
 
 void inPlayKeyInput() { // registers player input
@@ -409,6 +411,26 @@ void showBall(int x, int y) {
     setTextColor(15);
 }
 
+void countScore() {
+    if (detectCollision(head->position.X, head->position.Y) == 3) {
+        if (ballCount > 0) // makes sure that the amount of balls isn't negative
+            ballCount--;
+        currentScore += 10;
+        addBody();
+        if (ballCount == 0) { // doesn't generate balls if many exist
+            addBall();
+        }
+        if (currentScore > 0 && currentScore > speedScore) {
+            speedScore += 50;
+            speedUp();
+        }
+    }
+    else if (detectCollision(head->position.X, head->position.Y) == 12) {
+        currentScore += 3;
+    }
+
+    printScore();
+}
 
 void waitToRecover() {
     int key, flag = 0;
@@ -416,7 +438,7 @@ void waitToRecover() {
     Snake* p = head->back;
     COORD nextPos;
 
-    //speedDown();
+    speedDown();
 
     for (int i = 0; i < 5; i++) {
         for (int i = 0; ; i++) {
@@ -486,4 +508,27 @@ void waitToRecover() {
     setTextColor(15);
 
     if (flag == 0) return;
+}
+
+void speedUp() {
+    speed -= 5;
+    if (speed < minSpeed) speed = minSpeed; // 최대 속도 리밋
+}
+
+void speedDown() {
+    speed += 5;
+    if (speed > maxSpeed) speed = maxSpeed; // minimum speed limit
+}
+
+void reset() {
+    direction = 3;
+    speed = 15;
+    heart = 3;
+    ballCount = 0;
+    head = NULL;
+    body = NULL;
+    tail = NULL;
+    length = 3;
+    speedScore = 50;
+    currentScore = 0;
 }

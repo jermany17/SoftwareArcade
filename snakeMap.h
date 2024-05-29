@@ -22,9 +22,11 @@ void printHighscore();
 void drawLife();
 void drawControls();
 void drawKeys();
+void clearScreen();
 
 int gameBoardInfo[GBOARD_HEIGHT + 1][GBOARD_WIDTH + 2];
 int heart = 3; // maximum num of lives
+int currentScore = 0;
 
 void initGameBoardInfo() { // setting up boundaries
     for (int y = 0; y < GBOARD_HEIGHT; y++) {
@@ -85,7 +87,7 @@ void printHighscore() {
 void printScore() {
     gotoxycol(72, 9, 15, "Score: ");
     setCurrentCursorPos(83, 9);
-    //printf("%5d", currentScore);
+    printf("%5d", currentScore);
     // print Score after setting cursor position
 }
 
@@ -118,4 +120,12 @@ void drawKeys() {
     gotoxycol(78, 17, 7, "¡ç  ¡æ");
     gotoxycol(80, 18, 7, "¡é");
     gotoxycol(73, 20, 7, "[SPACE] to STOP");
+}
+
+void clearScreen() {
+    for (int y = 1; y <= GBOARD_HEIGHT - 1; y++) {
+        for (int x = 1; x <= GBOARD_WIDTH; x++) {
+            gotoxy(GBOARD_ORIGIN_X + x * 2, GBOARD_ORIGIN_Y + y, "  ");
+        }
+    }
 }
