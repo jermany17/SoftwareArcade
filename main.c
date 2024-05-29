@@ -19,9 +19,9 @@ enum ColorType {
 #define ENTER 13 
 
 #define T_height 1
-#define T_width 20 // 타이틀 시작 좌표
+#define T_width 25 // 타이틀 시작 좌표
 #define M_height 20
-#define M_width 40 // 메뉴 시작 좌표
+#define M_width 45 // 메뉴 시작 좌표
 #define Title_Speed 35
 const int M_num = 4;
 int Selected_Menu_Num = 0; // 메뉴 넘버
@@ -32,12 +32,12 @@ int SelectMenu();
 void Delete_Menu();
 void eraseTitle();
 void textcolor(int color);
-
+int todo = -1;
 
 int main() {
     console(); // 콘솔 크기 지정
     removeCursor();
-    int todo = -1;
+    
 
     while (1) {
         switch (todo) {
