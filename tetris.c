@@ -8,9 +8,23 @@
 #include <stdbool.h>
 #include "tetrisheader.h"
 
-int posX = 12, posY = 0;
+// gameBoardinfo[21][12];
+
 int tetris() {
+    
+    posX = 12;
+    posY = 0;
     speed = 30; // 블록 이동 속도
+    score = 0;
+    block_id = 0;
+    
+    int i, j;
+    for (i = 0; i < 21; i++) {
+        for (j = 0; j < 12; j++) {
+            gameBoardInfo[i][j] = 0;
+        }
+    }
+
     srand((unsigned int)time(NULL)); // 난수 생성
     removeCursor();  // 커서 제거
     DrawGameBoard(); // 게임 보드 그리기
@@ -36,8 +50,8 @@ int tetris() {
         block_id = (rand() % 7) * 4; // 새로운 블록 랜덤 생성
     }
     // 게임 오버 메시지 출력
-    setCurrentCursorPos(14, 0);
+    setCurrentCursorPos(11, 1);
     puts("GameOver");
-    getchar();
-    return 0;
+    Sleep(100);
+    return -1;
 }
