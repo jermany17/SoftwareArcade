@@ -65,6 +65,7 @@ void speedDown();
 
 int detectCollision(int currentPosX, int currentPosY);
 int isGameOver();
+void gameOver();
 void addBall();
 void showBall(int arrX, int arrY);
 void waitToRecover();
@@ -74,16 +75,12 @@ void countScore();
 int snake() {
     console();
     removeCursor();
+    system("cls");
+    clearScreen();
+    reset();
+    stage1();
 
-    while (1) {
-        system("cls");
-        clearScreen();
-        reset();
-        stage1();
-    }
-    getch();
-
-	return 0;
+    return -1;
 }
 
 void stage1() {
@@ -102,6 +99,7 @@ void stage1() {
             inPlayKeyInput();
         }
     }
+    gameOver();
 }
 
 void initSnake() {
@@ -388,6 +386,33 @@ int isGameOver() { // game ends when detectCollision returns 1 or 2
     COORD nextPos = nextHeadPos();
     if (detectCollision(nextPos.X, nextPos.Y) == 1 || detectCollision(nextPos.X, nextPos.Y) == 2) return 1;
     return 0;
+}
+
+void gameOver() {
+    Sleep(700);
+
+    system("cls");
+    gotoxycol(30, 7, 12, "бсбсбсбсбс  бсбсбсбсбс  бсбс  бсбс  бсбсбсбсбс");
+    gotoxycol(30, 8, 12, "бс          бс      бс  бс  бс  бс  бс");
+    gotoxycol(30, 9, 12, "бс  бсбсбс  бсбсбсбсбс  бс  бс  бс  бсбсбсбсбс");
+    gotoxycol(30, 10, 12, "бс      бс  бс      бс  бс      бс  бс");
+    gotoxycol(30, 11, 12, "бсбсбсбсбс  бс      бс  бс      бс  бсбсбсбсбс");
+    gotoxycol(30, 13, 12, "бсбсбсбсбс  бс      бс  бсбсбсбсбс  бсбсбсбс");
+    gotoxycol(30, 14, 12, "бс      бс  бс      бс  бс          бс      бс");
+    gotoxycol(30, 15, 12, "бс      бс  бс      бс  бсбсбсбсбс  бсбсбсбс");
+    gotoxycol(30, 16, 12, "бс      бс    бс  бс    бс          бс      бс");
+    gotoxycol(30, 17, 12, "бсбсбсбсбс      бс      бсбсбсбсбс  бс      бс");
+
+    gotoxycol(50, 20, 15, "SCORE ");
+    // print final score
+    gotoxycol(52, 22, 14, "");
+    printf("%d", currentScore);
+    gotoxycol(48, 24, 15, "HIGHSCORE ");
+    gotoxycol(52, 26, 14, "");
+    printf("%d", stageBestScore);
+    // print highscore
+
+    kbhit();
 }
 
 void addBall() {
