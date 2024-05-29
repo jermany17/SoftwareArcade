@@ -264,6 +264,7 @@ void RemoveFillUpLine(void) // 가득 찬 줄을 제거하는 함수
 				break; // 검사 중단
 		}
 		if (x == (GBOARD_WIDTH + 1)) { // 한 줄이 가득 찬 경우
+			score += 10;
 			for (line = 0; y - line > 0; line++) {
 				// 아래에서부터 줄을 당겨옴
 				memcpy(&gameBoardInfo[y - line][1],
