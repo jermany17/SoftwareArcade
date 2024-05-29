@@ -46,17 +46,17 @@ int main() {
             system("cls"); // 화면 지우기
             break;
         case 0: // 스네이크 게임
-            snake();
+            todo=snake();
             getch();
             system("cls");
             break;
         case 1: // 테트리스 게임
-            tetris();
+            todo=tetris();
             getch();
             system("cls");
             break;
         case 2: // 틱택토 게임
-            tictactoe();
+            todo=tictactoe();
             getch();
             system("cls");
             break;
