@@ -132,6 +132,9 @@
     <ClCompile Include="tetris.c" />
     <ClCompile Include="tictactoe.c" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="tetrisheader.h" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

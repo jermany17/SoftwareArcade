@@ -32,12 +32,12 @@ int SelectMenu();
 void Delete_Menu();
 void eraseTitle();
 void textcolor(int color);
-
+int todo = -1;
 
 int main() {
     console(); // 콘솔 크기 지정
     removeCursor();
-    int todo = -1;
+    
 
     while (1) {
         switch (todo) {
