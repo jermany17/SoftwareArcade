@@ -78,6 +78,18 @@ void moveAndPrintChar(int x, int y, int col, char* c) {
     printf("%c", c);
 }
 
+void switchPlayer(int* player, char* mark) {
+    if (*player == 1) {
+        *mark = 'O';
+        *player = 2;
+    }
+    else {
+        *mark = 'X';
+        *player = 1;
+    }
+}
+
+
 int checkGameState() {
 
     //특정 Player가 이긴 상황
