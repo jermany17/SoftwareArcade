@@ -14,7 +14,11 @@
 #define GBOARD_ORIGIN_X 18
 #define GBOARD_ORIGIN_Y 8
 
+#define WIN 2
+#define DRAW 1
+#define PROGRESS 0
 
+int checkGameState();
 void printBoard();
 void moveAndPrintChar(int x, int y, int col, char* c);
 
@@ -73,4 +77,29 @@ void moveAndPrintChar(int x, int y, int col, char* c) {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), col);
     printf("%c", c);
 }
+
+int checkGameState() {
+
+    //특정 Player가 이긴 상황
+
+    for (int i = 0;i < 9;i += 3) {
+        if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
+            return WIN;
+        }
+    }
+    if ((board[0] == board[4] && board[4] == board[8]) ||
+        (board[2] == board[4] && board[4] == board[6])) {
+        return WIN;
+    }
+
+    //게임 진행 중인 상황
+    for (int i = 0;i < 9;i++) {
+        if (board[i] != 'X' && board[i] != 'O') {
+            return PROGRESS;
+        }
+    }
+
+    return DRAW;
+}
+
 
