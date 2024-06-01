@@ -18,17 +18,100 @@
 #define DRAW 1
 #define PROGRESS 0
 
+
 int checkGameState();
+void clearScreen();
+void switchPlayer(int*, char*);
 void printBoard();
+void gotoxycol(int x, int y, int col, char* s);
 void moveAndPrintChar(int x, int y, int col, char* c);
+void gotoxytic(int x, int y);
 
 char board[9] = { '1', '2', '3','4', '5', '6','7', '8', '9' };
 
 int tictactoe() {
 
-    printBoard();
+    
+    int player = 1;
+    char mark = 'X';
+    int inputNumber;
+    int gamePlay = 1;
+
+
+    while (gamePlay) {
+        clearScreen();
+        printBoard();
+
+        
+        gotoxytic(55, 14);
+        printf("Player %d의 차례입니다. 숫자를 입력해주세요: ", player);
+        scanf("%d", &inputNumber);
+
+        
+        if (0 < inputNumber && inputNumber < 10) {
+
+            if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
+
+                board[inputNumber - 1] = mark;
+
+                int checkState = checkGameState();
+
+
+                if (checkState == PROGRESS) {
+                    switchPlayer(&player, &mark);
+                }
+
+                else if (checkState == DRAW) {
+                    clearScreen();
+                    printBoard();
+
+                    gotoxytic(55, 14);
+                    printf("비겼습니다!\n");
+                    gamePlay = 0;
+                    //return -1;
+                }
+
+                else if (checkState == WIN) {
+                    clearScreen();
+                    printBoard();
+
+                    gotoxytic(55, 14);
+                    printf("Player %d가 이겼습니다!\n", player);
+                    gamePlay = 0;
+                    //return -1;
+                }
+            }
+            else {
+                clearScreen();
+                printBoard();
+
+                gotoxytic(55, 14);
+                printf("이미 입력된 숫자입니다. 다시입력해주세요.\n");
+                getchar();
+                getchar();
+            }
+        }
+        else {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("1부터9까지의 숫자를 입력해주세요.\n");
+            getchar();
+            getchar();
+        }
+        
+        
+
+    }
+
 
 	return 0;
+}
+
+void gotoxytic(int x, int y) {
+    COORD pos = { x, y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 void printBoard() {
