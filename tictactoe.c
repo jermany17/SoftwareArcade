@@ -36,10 +36,10 @@ int tictactoe() {
     int player = 1;
     char mark = 'X';
     int inputNumber;
-    int gamePlay = 1;
+    int isGameRunning = 1;
 
 
-    while (gamePlay) {
+    while (isGameRunning) {
         clearScreen();
         printBoard();
 
@@ -68,8 +68,7 @@ int tictactoe() {
 
                     gotoxytic(55, 14);
                     printf("비겼습니다!\n");
-                    gamePlay = 0;
-                    //return -1;
+                    isGameRunning = 0;
                 }
 
                 else if (checkState == WIN) {
@@ -78,8 +77,7 @@ int tictactoe() {
 
                     gotoxytic(55, 14);
                     printf("Player %d가 이겼습니다!\n", player);
-                    gamePlay = 0;
-                    //return -1;
+                    isGameRunning = 0;
                 }
             }
             else {
