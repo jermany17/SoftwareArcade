@@ -20,9 +20,9 @@
 #define PROGRESS 0
 
 
+void computerTurn();
 int checkGameState();
 void clearScreen();
-void switchPlayer(int*, char*);
 void printBoard();
 void gotoxycol(int x, int y, int col, char* s);
 void moveAndPrintChar(int x, int y, int col, char* c);
@@ -162,16 +162,59 @@ void moveAndPrintChar(int x, int y, int col, char* c) {
     printf("%c", c);
 }
 
-void switchPlayer(int* player, char* mark) {
-    if (*player == 1) {
-        *mark = 'O';
-        *player = 2;
+void computerTurn() {
+
+
+    if ((board[1] == 'X' && board[2] == 'X' || board[3] == 'X' && board[6] == 'X' || board[4] == 'X' && board[8] == 'X') &&
+        board[0] != 'X' && board[0] != 'O') {
+        board[0] = 'O';
+    }
+    else if ((board[0] == 'X' && board[2] == 'X' || board[4] == 'X' && board[7] == 'X') &&
+        board[1] != 'X' && board[1] != 'O') {
+        board[1] = 'O';
+    }
+    else if ((board[0] == 'X' && board[1] == 'X' || board[4] == 'X' && board[6] == 'X' || board[5] == 'X' && board[8] == 'X') &&
+        board[2] != 'X' && board[2] != 'O') {
+        board[2] = 'O';
+    }
+    else if ((board[0] == 'X' && board[6] == 'X' || board[4] == 'X' && board[5] == 'X') &&
+        board[3] != 'X' && board[3] != 'O') {
+        board[3] = 'O';
+    }
+    else if ((board[0] == 'X' && board[8] == 'X' || board[2] == 'X' && board[6] == 'X' || board[1] == 'X' && board[7] == 'X' || board[3] == 'X' && board[5] == 'X') &&
+        board[4] != 'X' && board[4] != 'O') {
+        board[4] = 'O';
+    }
+    else if ((board[3] == 'X' && board[4] == 'X' || board[2] == 'X' && board[8] == 'X') &&
+        board[5] != 'X' && board[5] != 'O') {
+        board[5] = 'O';
+    }
+    else if ((board[0] == 'X' && board[3] == 'X' || board[2] == 'X' && board[4] == 'X' || board[7] == 'X' && board[8] == 'X') &&
+        board[6] != 'X' && board[6] != 'O') {
+        board[6] = 'O';
+    }
+    else if ((board[1] == 'X' && board[4] == 'X' || board[6] == 'X' && board[8] == 'X') &&
+        board[7] != 'X' && board[7] != 'O') {
+        board[7] = 'O';
+    }
+    else if ((board[0] == 'X' && board[4] == 'X' || board[2] == 'X' && board[5] == 'X' || board[6] == 'X' && board[7] == 'X') &&
+        board[8] != 'X' && board[8] != 'O') {
+        board[8] = 'O';
     }
     else {
-        *mark = 'X';
-        *player = 1;
+
+        while (1) {
+            int randomNubmer = rand() % 8;
+            if (board[randomNubmer] != 'X' && board[randomNubmer] != 'O') {
+                board[randomNubmer] = 'O';
+                break;
+            }
+        }
+
     }
+
 }
+
 
 
 int checkGameState() {
