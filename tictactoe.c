@@ -14,14 +14,15 @@
 #define GBOARD_ORIGIN_X 18
 #define GBOARD_ORIGIN_Y 8
 
-#define WIN 2
+#define COMPUTERWIN 3
+#define PLAYERWIN 2
 #define DRAW 1
 #define PROGRESS 0
 
 
+void computerTurn();
 int checkGameState();
 void clearScreen();
-void switchPlayer(int*, char*);
 void printBoard();
 void gotoxycol(int x, int y, int col, char* s);
 void moveAndPrintChar(int x, int y, int col, char* c);
@@ -30,56 +31,56 @@ void gotoxytic(int x, int y);
 char board[9] = { '1', '2', '3','4', '5', '6','7', '8', '9' };
 
 int tictactoe() {
-
     
-    int player = 1;
-    char mark = 'X';
     int inputNumber;
-    int gamePlay = 1;
+    int isGameRunning = 1;
+    int checkState;
 
-
-    while (gamePlay) {
+    while (isGameRunning) {
         clearScreen();
         printBoard();
 
-        
         gotoxytic(55, 14);
-        printf("Player %d의 차례입니다. 숫자를 입력해주세요: ", player);
+        printf(" 숫자를 입력해주세요: ");
         scanf("%d", &inputNumber);
 
-        
+
         if (0 < inputNumber && inputNumber < 10) {
 
             if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
 
-                board[inputNumber - 1] = mark;
+                board[inputNumber - 1] = 'X';
 
-                int checkState = checkGameState();
+                checkState = checkGameState();
 
 
-                if (checkState == PROGRESS) {
-                    switchPlayer(&player, &mark);
-                }
-
-                else if (checkState == DRAW) {
+                if (checkState == DRAW) {
                     clearScreen();
                     printBoard();
 
                     gotoxytic(55, 14);
-                    printf("비겼습니다!\n");
-                    gamePlay = 0;
-                    //return -1;
+                    printf("비겼습니다!                  \n");
+                    isGameRunning = 0;
                 }
 
-                else if (checkState == WIN) {
+                else if (checkState == PLAYERWIN) {
                     clearScreen();
                     printBoard();
 
                     gotoxytic(55, 14);
-                    printf("Player %d가 이겼습니다!\n", player);
-                    gamePlay = 0;
-                    //return -1;
+                    printf("Player가 이겼습니다!         \n");
+                    isGameRunning = 0;
                 }
+
+                else if (checkState == COMPUTERWIN) {
+                    clearScreen();
+                    printBoard();
+
+                    gotoxytic(55, 14);
+                    printf("Computer가 이겼습니다!        \n");
+                    isGameRunning = 0;
+                }
+
             }
             else {
                 clearScreen();
@@ -96,17 +97,47 @@ int tictactoe() {
             printBoard();
 
             gotoxytic(55, 14);
-            printf("1부터9까지의 숫자를 입력해주세요.\n");
+            printf("1부터9까지의 숫자를 입력해주세요.             \n");
             getchar();
             getchar();
         }
-        
-        
+
+        computerTurn();
+
+        checkState = checkGameState();
+
+
+        if (checkState == DRAW) {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("비겼습니다!                        \n");
+            isGameRunning = 0;
+        }
+
+        else if (checkState == PLAYERWIN) {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("Player가 이겼습니다!                  \n");
+            isGameRunning = 0;
+        }
+
+        else if (checkState == COMPUTERWIN) {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("Computer가 이겼습니다!                  \n");
+            isGameRunning = 0;
+        }
 
     }
 
 
-	return 0;
+	return -1;
 }
 
 void gotoxytic(int x, int y) {
@@ -161,37 +192,93 @@ void moveAndPrintChar(int x, int y, int col, char* c) {
     printf("%c", c);
 }
 
-void switchPlayer(int* player, char* mark) {
-    if (*player == 1) {
-        *mark = 'O';
-        *player = 2;
+void computerTurn() {
+
+
+    if ((board[1] == 'X' && board[2] == 'X' || board[3] == 'X' && board[6] == 'X' || board[4] == 'X' && board[8] == 'X') &&
+        board[0] != 'X' && board[0] != 'O') {
+        board[0] = 'O';
+    }
+    else if ((board[0] == 'X' && board[2] == 'X' || board[4] == 'X' && board[7] == 'X') &&
+        board[1] != 'X' && board[1] != 'O') {
+        board[1] = 'O';
+    }
+    else if ((board[0] == 'X' && board[1] == 'X' || board[4] == 'X' && board[6] == 'X' || board[5] == 'X' && board[8] == 'X') &&
+        board[2] != 'X' && board[2] != 'O') {
+        board[2] = 'O';
+    }
+    else if ((board[0] == 'X' && board[6] == 'X' || board[4] == 'X' && board[5] == 'X') &&
+        board[3] != 'X' && board[3] != 'O') {
+        board[3] = 'O';
+    }
+    else if ((board[0] == 'X' && board[8] == 'X' || board[2] == 'X' && board[6] == 'X' || board[1] == 'X' && board[7] == 'X' || board[3] == 'X' && board[5] == 'X') &&
+        board[4] != 'X' && board[4] != 'O') {
+        board[4] = 'O';
+    }
+    else if ((board[3] == 'X' && board[4] == 'X' || board[2] == 'X' && board[8] == 'X') &&
+        board[5] != 'X' && board[5] != 'O') {
+        board[5] = 'O';
+    }
+    else if ((board[0] == 'X' && board[3] == 'X' || board[2] == 'X' && board[4] == 'X' || board[7] == 'X' && board[8] == 'X') &&
+        board[6] != 'X' && board[6] != 'O') {
+        board[6] = 'O';
+    }
+    else if ((board[1] == 'X' && board[4] == 'X' || board[6] == 'X' && board[8] == 'X') &&
+        board[7] != 'X' && board[7] != 'O') {
+        board[7] = 'O';
+    }
+    else if ((board[0] == 'X' && board[4] == 'X' || board[2] == 'X' && board[5] == 'X' || board[6] == 'X' && board[7] == 'X') &&
+        board[8] != 'X' && board[8] != 'O') {
+        board[8] = 'O';
     }
     else {
-        *mark = 'X';
-        *player = 1;
+
+        while (1) {
+            int randomNubmer = rand() % 8;
+            if (board[randomNubmer] != 'X' && board[randomNubmer] != 'O') {
+                board[randomNubmer] = 'O';
+                break;
+            }
+        }
+
     }
+
 }
+
 
 
 int checkGameState() {
 
+    int i = 0;
+
     //특정 Player가 이긴 상황
 
-    for (int i = 0;i < 9;i += 3) {
+    for (i = 0;i < 9;i += 3) {
         if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
-            return WIN;
+            if (board[i] == 'X') {
+                return PLAYERWIN;
+            }
+            return COMPUTERWIN;
         }
     }
 
-    for (int i = 0;i < 3;i++) {
+    for (i = 0;i < 9;i++) {
         if (board[i] == board[i + 3] && board[i + 3] == board[i + 6]) {
-            return WIN;
+            if (board[i] == 'X') {
+                return PLAYERWIN;
+            }
+            return COMPUTERWIN;
         }
     }
+
+
 
     if ((board[0] == board[4] && board[4] == board[8]) ||
         (board[2] == board[4] && board[4] == board[6])) {
-        return WIN;
+        if (board[4] == 'X') {
+            return PLAYERWIN;
+        }
+        return COMPUTERWIN;
     }
 
     //게임 진행 중인 상황
@@ -203,5 +290,4 @@ int checkGameState() {
 
     return DRAW;
 }
-
 
