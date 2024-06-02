@@ -31,54 +31,56 @@ void gotoxytic(int x, int y);
 char board[9] = { '1', '2', '3','4', '5', '6','7', '8', '9' };
 
 int tictactoe() {
-
     
-    int player = 1;
-    char mark = 'X';
     int inputNumber;
     int isGameRunning = 1;
-
+    int checkState;
 
     while (isGameRunning) {
         clearScreen();
         printBoard();
 
-        
         gotoxytic(55, 14);
-        printf("Player %d의 차례입니다. 숫자를 입력해주세요: ", player);
+        printf(" 숫자를 입력해주세요: ");
         scanf("%d", &inputNumber);
 
-        
+
         if (0 < inputNumber && inputNumber < 10) {
 
             if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
 
-                board[inputNumber - 1] = mark;
+                board[inputNumber - 1] = 'X';
 
-                int checkState = checkGameState();
+                checkState = checkGameState();
 
 
-                if (checkState == PROGRESS) {
-                    switchPlayer(&player, &mark);
-                }
-
-                else if (checkState == DRAW) {
+                if (checkState == DRAW) {
                     clearScreen();
                     printBoard();
 
                     gotoxytic(55, 14);
-                    printf("비겼습니다!\n");
+                    printf("비겼습니다!                  \n");
                     isGameRunning = 0;
                 }
 
-                else if (checkState == WIN) {
+                else if (checkState == PLAYERWIN) {
                     clearScreen();
                     printBoard();
 
                     gotoxytic(55, 14);
-                    printf("Player %d가 이겼습니다!\n", player);
+                    printf("Player가 이겼습니다!         \n");
                     isGameRunning = 0;
                 }
+
+                else if (checkState == COMPUTERWIN) {
+                    clearScreen();
+                    printBoard();
+
+                    gotoxytic(55, 14);
+                    printf("Computer가 이겼습니다!        \n");
+                    isGameRunning = 0;
+                }
+
             }
             else {
                 clearScreen();
@@ -95,17 +97,47 @@ int tictactoe() {
             printBoard();
 
             gotoxytic(55, 14);
-            printf("1부터9까지의 숫자를 입력해주세요.\n");
+            printf("1부터9까지의 숫자를 입력해주세요.             \n");
             getchar();
             getchar();
         }
-        
-        
+
+        computerTurn();
+
+        checkState = checkGameState();
+
+
+        if (checkState == DRAW) {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("비겼습니다!                        \n");
+            isGameRunning = 0;
+        }
+
+        else if (checkState == PLAYERWIN) {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("Player가 이겼습니다!                  \n");
+            isGameRunning = 0;
+        }
+
+        else if (checkState == COMPUTERWIN) {
+            clearScreen();
+            printBoard();
+
+            gotoxytic(55, 14);
+            printf("Computer가 이겼습니다!                  \n");
+            isGameRunning = 0;
+        }
 
     }
 
 
-	return 0;
+	return -1;
 }
 
 void gotoxytic(int x, int y) {
