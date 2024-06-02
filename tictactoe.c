@@ -14,7 +14,8 @@
 #define GBOARD_ORIGIN_X 18
 #define GBOARD_ORIGIN_Y 8
 
-#define WIN 2
+#define COMPUTERWIN 3
+#define PLAYERWIN 2
 #define DRAW 1
 #define PROGRESS 0
 
@@ -175,23 +176,36 @@ void switchPlayer(int* player, char* mark) {
 
 int checkGameState() {
 
+    int i = 0;
+
     //특정 Player가 이긴 상황
 
-    for (int i = 0;i < 9;i += 3) {
+    for (i = 0;i < 9;i += 3) {
         if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
-            return WIN;
+            if (board[i] == 'X') {
+                return PLAYERWIN;
+            }
+            return COMPUTERWIN;
         }
     }
 
-    for (int i = 0;i < 3;i++) {
+    for (i = 0;i < 9;i++) {
         if (board[i] == board[i + 3] && board[i + 3] == board[i + 6]) {
-            return WIN;
+            if (board[i] == 'X') {
+                return PLAYERWIN;
+            }
+            return COMPUTERWIN;
         }
     }
+
+
 
     if ((board[0] == board[4] && board[4] == board[8]) ||
         (board[2] == board[4] && board[4] == board[6])) {
-        return WIN;
+        if (board[4] == 'X') {
+            return PLAYERWIN;
+        }
+        return COMPUTERWIN;
     }
 
     //게임 진행 중인 상황
@@ -203,5 +217,4 @@ int checkGameState() {
 
     return DRAW;
 }
-
 
