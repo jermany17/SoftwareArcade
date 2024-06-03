@@ -80,7 +80,7 @@ int snake() {
     reset();
     stage1();
 
-    return -1;
+    return -1; // returns to main screen when the game ends
 }
 
 void stage1() {
@@ -94,7 +94,7 @@ void stage1() {
         if (isGameOver()) break;
 
         while (1) {
-            if (snakeMove() == 0) break;
+            if (snakeMove() == 0) break; // breaks when snake stops moving
 
             inPlayKeyInput();
         }
@@ -102,8 +102,7 @@ void stage1() {
     gameOver();
 }
 
-void initSnake() {
-
+void initSnake() { // initialises snake character
     COORD headPos = { GBOARD_ORIGIN_X + GBOARD_WIDTH , GBOARD_ORIGIN_Y + GBOARD_HEIGHT / 2 };
     COORD bodyPos = { GBOARD_ORIGIN_X + GBOARD_WIDTH - 2, GBOARD_ORIGIN_Y + GBOARD_HEIGHT / 2 };
     COORD tailPos = { GBOARD_ORIGIN_X + GBOARD_WIDTH - 4, GBOARD_ORIGIN_Y + GBOARD_HEIGHT / 2 };
@@ -112,7 +111,7 @@ void initSnake() {
     body = getNode(NULL, NULL, bodyPos);
     tail = getNode(NULL, NULL, tailPos);
 
-    head->back = body;
+    head->back = body; // connect body nodes to each other
     body->front = head;
     body->back = tail;
     tail->front = body;
@@ -140,16 +139,16 @@ void addBody() {
     COORD newTailPos = { tail->position.X, tail->position.Y };
 
     switch (tail->direct) {
-        case LEFT:
-            newTailPos.X += 2; break;
-        case RIGHT:
-            newTailPos.X -= 2; break;
-        case UP:
-            newTailPos.Y++; break;
-        case DOWN:
-            newTailPos.Y--; break;
-        default:
-            break;
+    case LEFT:
+        newTailPos.X += 2; break;
+    case RIGHT:
+        newTailPos.X -= 2; break;
+    case UP:
+        newTailPos.Y++; break;
+    case DOWN:
+        newTailPos.Y--; break;
+    default:
+        break;
     }
     Snake* p = getNode(tail, NULL, newTailPos);
     p->direct = tail->direct;
@@ -176,20 +175,20 @@ COORD nextHeadPos() { // returns the next position of the head
     curPos.Y = head->position.Y;
 
     switch (direction) {
-        case 0:
-            curPos.Y--;
-            break;
-        case 1:
-            curPos.Y++;
-            break;
-        case 2:
-            curPos.X -= 2;
-            break;
-        case 3:
-            curPos.X += 2;
-            break;
-        default:
-            break;
+    case 0:
+        curPos.Y--;
+        break;
+    case 1:
+        curPos.Y++;
+        break;
+    case 2:
+        curPos.X -= 2;
+        break;
+    case 3:
+        curPos.X += 2;
+        break;
+    default:
+        break;
     }
 
     return curPos;
@@ -248,8 +247,7 @@ void eraseTail() { // erases end node as Snake moves
     free(pi);
 }
 
-Snake* getNode(Snake* front, Snake* back, COORD position) // create new Snake node
-{
+Snake* getNode(Snake* front, Snake* back, COORD position) { // create new Snake node
     Snake* node = (Snake*)malloc(sizeof(Snake));
     node->front = front;
     node->back = back;
@@ -271,7 +269,7 @@ int snakeMove() {
     }
 
     if (detectCollision(nextPos.X, nextPos.Y) != 13) {
-        drawHead(nextPos);      
+        drawHead(nextPos);
         eraseTail();
     }
 
@@ -289,24 +287,24 @@ void inPlayKeyInput() { // registers player input
         if (_kbhit() != 0) {
             key = _getch();
             switch (key)
-                {
-                case UP:
-                    shiftUp();
-                    break;
-                case DOWN:
-                    shiftDown();
-                    break;
-                case LEFT:
-                    shiftLeft();
-                    break;
-                case RIGHT:
-                    shiftRight();
-                    break;
-                case SPACE:
-                    pausePlay();
-                    break;
-                default:
-                    break;
+            {
+            case UP:
+                shiftUp();
+                break;
+            case DOWN:
+                shiftDown();
+                break;
+            case LEFT:
+                shiftLeft();
+                break;
+            case RIGHT:
+                shiftRight();
+                break;
+            case SPACE:
+                pausePlay();
+                break;
+            default:
+                break;
             }
         }
         Sleep(15); // adjusts game play speed
@@ -419,7 +417,7 @@ void addBall() {
     int ballX;
     int ballY;
 
-    do {
+    do { // adds orbs to the board randomly
         ballX = (rand() % GBOARD_WIDTH) + GBOARD_ORIGIN_X; if (ballX % 2 == 1) ballX++;
         ballY = (rand() % GBOARD_HEIGHT) + GBOARD_ORIGIN_Y;
     } while (detectCollision(ballX, ballY));
@@ -445,13 +443,10 @@ void countScore() {
         if (ballCount == 0) { // doesn't generate balls if many exist
             addBall();
         }
-        if (currentScore > 0 && currentScore > speedScore) {
+        if (currentScore > 0 && currentScore > speedScore) { // gameplay speed increases as score increases
             speedScore += 50;
             speedUp();
         }
-    }
-    else if (detectCollision(head->position.X, head->position.Y) == 12) {
-        currentScore += 3;
     }
 
     printScore();
@@ -463,7 +458,7 @@ void waitToRecover() {
     Snake* p = head->back;
     COORD nextPos;
 
-    speedDown();
+    speedDown(); // snake slows down after collision
 
     for (int i = 0; i < 5; i++) {
         for (int i = 0; ; i++) {
@@ -537,7 +532,7 @@ void waitToRecover() {
 
 void speedUp() {
     speed -= 5;
-    if (speed < minSpeed) speed = minSpeed; // 최대 속도 리밋
+    if (speed < minSpeed) speed = minSpeed; // maximum speed limit
 }
 
 void speedDown() {
@@ -545,7 +540,7 @@ void speedDown() {
     if (speed > maxSpeed) speed = maxSpeed; // minimum speed limit
 }
 
-void reset() {
+void reset() { // resets game variables when game restarts
     direction = 3;
     speed = 15;
     heart = 3;
