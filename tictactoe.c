@@ -14,18 +14,28 @@
 #define GBOARD_ORIGIN_X 18
 #define GBOARD_ORIGIN_Y 8
 
+
+//GameState
 #define COMPUTERWIN 3
 #define PLAYERWIN 2
 #define DRAW 1
 #define PROGRESS 0
 
 
+int getInputNumber();
+
+void displayInputRetryMessage();
+void displayDrawMessage();
+void displayPlayerWinMessage();
+void displayComputerWinMessage();
+
 void computerTurn();
 int checkGameState();
 void clearScreen();
 void printBoard();
-void gotoxycol(int x, int y, int col, char* s);
+
 void moveAndPrintChar(int x, int y, int col, char* c);
+void gotoxycol(int x, int y, int col, char* s);
 void gotoxytic(int x, int y);
 
 char board[9] = { '1', '2', '3','4', '5', '6','7', '8', '9' };
@@ -37,69 +47,39 @@ int tictactoe() {
     int checkState;
 
     while (isGameRunning) {
-        clearScreen();
         printBoard();
-
         gotoxytic(55, 14);
         printf(" 숫자를 입력해주세요: ");
-        scanf("%d", &inputNumber);
+
+        inputNumber = getInputNumber();
+        gotoxytic(78, 14);
+        printf("%d", inputNumber);
+        Sleep(500);
 
 
-        if (0 < inputNumber && inputNumber < 10) {
+        if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
 
-            if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
+            board[inputNumber - 1] = 'X';
 
-                board[inputNumber - 1] = 'X';
+            checkState = checkGameState();
 
-                checkState = checkGameState();
-
-
-                if (checkState == DRAW) {
-                    clearScreen();
-                    printBoard();
-
-                    gotoxytic(55, 14);
-                    printf("비겼습니다!                  \n");
-                    isGameRunning = 0;
-                }
-
-                else if (checkState == PLAYERWIN) {
-                    clearScreen();
-                    printBoard();
-
-                    gotoxytic(55, 14);
-                    printf("Player가 이겼습니다!         \n");
-                    isGameRunning = 0;
-                }
-
-                else if (checkState == COMPUTERWIN) {
-                    clearScreen();
-                    printBoard();
-
-                    gotoxytic(55, 14);
-                    printf("Computer가 이겼습니다!        \n");
-                    isGameRunning = 0;
-                }
-
+            if (checkState == DRAW) {
+                displayDrawMessage();
+                break;
             }
-            else {
-                clearScreen();
-                printBoard();
-
-                gotoxytic(55, 14);
-                printf("이미 입력된 숫자입니다. 다시입력해주세요.\n");
-                getchar();
-                getchar();
+            else if (checkState == PLAYERWIN) {
+                displayPlayerWinMessage();
+                break;
             }
+            else if (checkState == COMPUTERWIN) {
+                displayComputerWinMessage();
+                break;
+            }
+
         }
         else {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("1부터9까지의 숫자를 입력해주세요.             \n");
-            getchar();
-            getchar();
+            displayInputRetryMessage();
+            continue;
         }
 
         computerTurn();
@@ -108,44 +88,89 @@ int tictactoe() {
 
 
         if (checkState == DRAW) {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("비겼습니다!                        \n");
-            isGameRunning = 0;
+            displayDrawMessage();
+            break;
         }
 
         else if (checkState == PLAYERWIN) {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("Player가 이겼습니다!                  \n");
-            isGameRunning = 0;
+            displayPlayerWinMessage();
+            break;
         }
 
         else if (checkState == COMPUTERWIN) {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("Computer가 이겼습니다!                  \n");
-            isGameRunning = 0;
+            displayComputerWinMessage();
+            break;
         }
 
     }
 
 
-	return -1;
+    return -1;
 }
 
+
+//숫자 입력받는 함수
+int getInputNumber() {
+    while (1) {
+        while (!_kbhit());
+
+        char ch = _getch();
+
+        if (ch >= '0' && ch <= '9') {
+            return ch - '0';
+        }
+    }
+}
+
+
+//이미 입력된 숫자를 입력받았을 때 화면에 띄우는 함수
+void displayInputRetryMessage() {
+    printBoard();
+    gotoxytic(48, 14);
+    printf("이미 입력된 숫자입니다. 잠시 기다렸다가 다시입력해주세요.\n");
+    Sleep(500);
+}
+
+
+//Player가 이겼을 때 화면에 띄우는 함수
+void displayPlayerWinMessage() {
+    printBoard();
+    gotoxytic(55, 14);
+    printf("Player가 이겼습니다!\n");
+    Sleep(500);
+}
+
+
+//Computer가 이겼을 때 화면에 띄우는 함수
+void displayComputerWinMessage() {
+    printBoard();
+    gotoxytic(55, 14);
+    printf("Computer가 이겼습니다!\n");
+    Sleep(500);
+}
+
+
+//비겼을 때 화면에 띄우는 함수
+void displayDrawMessage() {
+    printBoard();
+    gotoxytic(55, 14);
+    printf("비겼습니다!\n");
+    Sleep(500);
+}
+
+
+//x,y좌표 정하는 함수 
 void gotoxytic(int x, int y) {
     COORD pos = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+
+//화면 지운 후에 현재 게임상황을 반영한 Board를 화면에 게시하는 함수
 void printBoard() {
+
+    clearScreen();
+
     // game title
     gotoxycol(45, 2, 14, "★ Tic Tac Toe ★");
     // draw game board
@@ -185,6 +210,7 @@ void printBoard() {
 }
 
 
+//char 위치 정해서 화면에 출력하는 함수
 void moveAndPrintChar(int x, int y, int col, char* c) {
     COORD pos = { x,y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
@@ -192,6 +218,8 @@ void moveAndPrintChar(int x, int y, int col, char* c) {
     printf("%c", c);
 }
 
+
+//computer 차례일 때 실행되는 함수
 void computerTurn() {
 
 
@@ -246,12 +274,10 @@ void computerTurn() {
 }
 
 
-
+//게임상황을 나타내는 함수
 int checkGameState() {
 
     int i = 0;
-
-    //특정 Player가 이긴 상황
 
     for (i = 0;i < 9;i += 3) {
         if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
@@ -272,7 +298,6 @@ int checkGameState() {
     }
 
 
-
     if ((board[0] == board[4] && board[4] == board[8]) ||
         (board[2] == board[4] && board[4] == board[6])) {
         if (board[4] == 'X') {
@@ -281,7 +306,7 @@ int checkGameState() {
         return COMPUTERWIN;
     }
 
-    //게임 진행 중인 상황
+
     for (int i = 0;i < 9;i++) {
         if (board[i] != 'X' && board[i] != 'O') {
             return PROGRESS;
