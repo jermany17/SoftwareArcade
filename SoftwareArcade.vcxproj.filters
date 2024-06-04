@@ -27,9 +27,15 @@
     <ClCompile Include="tetris.c">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="score_manager.c">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="tetrisheader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="score_manager.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
