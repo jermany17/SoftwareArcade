@@ -22,6 +22,8 @@
 #define PROGRESS 0
 
 
+int getInputNumber();
+
 void displayInputRetryMessage();
 void displayDrawMessage();
 void displayPlayerWinMessage();
@@ -31,6 +33,7 @@ void computerTurn();
 int checkGameState();
 void clearScreen();
 void printBoard();
+
 void moveAndPrintChar(int x, int y, int col, char* c);
 void gotoxycol(int x, int y, int col, char* s);
 void gotoxytic(int x, int y);
@@ -45,49 +48,38 @@ int tictactoe() {
 
     while (isGameRunning) {
         printBoard();
-
         gotoxytic(55, 14);
         printf(" 숫자를 입력해주세요: ");
-        scanf("%d", &inputNumber);
+
+        inputNumber = getInputNumber();
+        gotoxytic(78, 14);
+        printf("%d", inputNumber);
+        Sleep(500);
 
 
-        if (0 < inputNumber && inputNumber < 10) {
+        if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
 
-            if (board[inputNumber - 1] != 'X' && board[inputNumber - 1] != 'O') {
+            board[inputNumber - 1] = 'X';
 
-                board[inputNumber - 1] = 'X';
+            checkState = checkGameState();
 
-                checkState = checkGameState();
-
-
-                if (checkState == DRAW) {
-                    displayDrawMessage();
-                    break;
-                }
-
-                else if (checkState == PLAYERWIN) {
-                    displayPlayerWinMessage();
-                    break;
-                }
-
-                else if (checkState == COMPUTERWIN) {
-                    displayComputerWinMessage();
-                    break;
-                }
-
+            if (checkState == DRAW) {
+                displayDrawMessage();
+                break;
             }
-            else {
-                displayInputRetryMessage();
-                continue;
+            else if (checkState == PLAYERWIN) {
+                displayPlayerWinMessage();
+                break;
             }
+            else if (checkState == COMPUTERWIN) {
+                displayComputerWinMessage();
+                break;
+            }
+
         }
         else {
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("1부터9까지의 숫자를 입력해주세요.             \n");
-            getchar();
-            getchar();
+            displayInputRetryMessage();
+            continue;
         }
 
         computerTurn();
@@ -113,51 +105,68 @@ int tictactoe() {
     }
 
 
-	return -1;
+    return -1;
 }
 
 
-//이미 입력된 숫자를 입력받았을 때 화면에 띄우는 부분
+//숫자 입력받는 함수
+int getInputNumber() {
+    while (1) {
+        while (!_kbhit());
+
+        char ch = _getch();
+
+        if (ch >= '0' && ch <= '9') {
+            return ch - '0';
+        }
+    }
+}
+
+
+//이미 입력된 숫자를 입력받았을 때 화면에 띄우는 함수
 void displayInputRetryMessage() {
     printBoard();
-    gotoxy(48, 14);
+    gotoxytic(48, 14);
     printf("이미 입력된 숫자입니다. 잠시 기다렸다가 다시입력해주세요.\n");
     Sleep(500);
 }
 
 
-//Player가 이겼을 때 화면에 띄우는 부분
+//Player가 이겼을 때 화면에 띄우는 함수
 void displayPlayerWinMessage() {
     printBoard();
-    gotoxy(55, 14);
+    gotoxytic(55, 14);
     printf("Player가 이겼습니다!\n");
     Sleep(500);
 }
 
 
-//Computer가 이겼을 때 화면에 띄우는 부분
+//Computer가 이겼을 때 화면에 띄우는 함수
 void displayComputerWinMessage() {
     printBoard();
-    gotoxy(55, 14);
+    gotoxytic(55, 14);
     printf("Computer가 이겼습니다!\n");
     Sleep(500);
 }
 
 
-//비겼을 때 화면에 띄우는 부분
+//비겼을 때 화면에 띄우는 함수
 void displayDrawMessage() {
     printBoard();
-    gotoxy(55, 14);
+    gotoxytic(55, 14);
     printf("비겼습니다!\n");
     Sleep(500);
 }
 
 
+//x,y좌표 정하는 함수 
 void gotoxytic(int x, int y) {
     COORD pos = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
+
+//화면 지운 후에 현재 게임상황을 반영한 Board를 화면에 게시하는 함수
 void printBoard() {
 
     clearScreen();
