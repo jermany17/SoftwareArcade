@@ -21,7 +21,7 @@
 #define DRAW 1
 #define PROGRESS 0
 
-
+void initializeBoard(char board[]);
 int getInputNumber();
 
 void displayInputRetryMessage();
@@ -48,6 +48,8 @@ int tictactoe() {
 
     while (isGameRunning) {
         printBoard();
+        gotoxytic(48, 14);
+        printf("                                                                ");
         gotoxytic(55, 14);
         printf(" 숫자를 입력해주세요: ");
 
@@ -104,9 +106,19 @@ int tictactoe() {
 
     }
 
+    initializeBoard(board);
 
     return -1;
 }
+
+
+//board[]를 초기화하는 함수 
+void initializeBoard(char board[]) {
+    for (int i = 0; i < 9; i++) {
+        board[i] = '1' + i; 
+    }
+}
+
 
 
 //숫자 입력받는 함수
@@ -125,6 +137,7 @@ int getInputNumber() {
 
 //이미 입력된 숫자를 입력받았을 때 화면에 띄우는 함수
 void displayInputRetryMessage() {
+
     printBoard();
     gotoxytic(48, 14);
     printf("이미 입력된 숫자입니다. 잠시 기다렸다가 다시입력해주세요.\n");
@@ -153,6 +166,8 @@ void displayComputerWinMessage() {
 //비겼을 때 화면에 띄우는 함수
 void displayDrawMessage() {
     printBoard();
+    gotoxytic(48, 14);
+    printf("                                                                ");
     gotoxytic(55, 14);
     printf("비겼습니다!\n");
     Sleep(500);
