@@ -210,6 +210,7 @@ void printBoard() {
 }
 
 
+//char 위치 정해서 화면에 출력하는 함수
 void moveAndPrintChar(int x, int y, int col, char* c) {
     COORD pos = { x,y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
@@ -217,6 +218,8 @@ void moveAndPrintChar(int x, int y, int col, char* c) {
     printf("%c", c);
 }
 
+
+//computer 차례일 때 실행되는 함수
 void computerTurn() {
 
 
@@ -271,12 +274,10 @@ void computerTurn() {
 }
 
 
-
+//게임상황을 나타내는 함수
 int checkGameState() {
 
     int i = 0;
-
-    //특정 Player가 이긴 상황
 
     for (i = 0;i < 9;i += 3) {
         if (board[i] == board[i + 1] && board[i + 1] == board[i + 2]) {
@@ -297,7 +298,6 @@ int checkGameState() {
     }
 
 
-
     if ((board[0] == board[4] && board[4] == board[8]) ||
         (board[2] == board[4] && board[4] == board[6])) {
         if (board[4] == 'X') {
@@ -306,7 +306,7 @@ int checkGameState() {
         return COMPUTERWIN;
     }
 
-    //게임 진행 중인 상황
+
     for (int i = 0;i < 9;i++) {
         if (board[i] != 'X' && board[i] != 'O') {
             return PROGRESS;
