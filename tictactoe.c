@@ -14,18 +14,25 @@
 #define GBOARD_ORIGIN_X 18
 #define GBOARD_ORIGIN_Y 8
 
+
+//GameState
 #define COMPUTERWIN 3
 #define PLAYERWIN 2
 #define DRAW 1
 #define PROGRESS 0
 
 
+void displayInputRetryMessage();
+void displayDrawMessage();
+void displayPlayerWinMessage();
+void displayComputerWinMessage();
+
 void computerTurn();
 int checkGameState();
 void clearScreen();
 void printBoard();
-void gotoxycol(int x, int y, int col, char* s);
 void moveAndPrintChar(int x, int y, int col, char* c);
+void gotoxycol(int x, int y, int col, char* s);
 void gotoxytic(int x, int y);
 
 char board[9] = { '1', '2', '3','4', '5', '6','7', '8', '9' };
@@ -37,7 +44,6 @@ int tictactoe() {
     int checkState;
 
     while (isGameRunning) {
-        clearScreen();
         printBoard();
 
         gotoxytic(55, 14);
@@ -55,45 +61,27 @@ int tictactoe() {
 
 
                 if (checkState == DRAW) {
-                    clearScreen();
-                    printBoard();
-
-                    gotoxytic(55, 14);
-                    printf("비겼습니다!                  \n");
-                    isGameRunning = 0;
+                    displayDrawMessage();
+                    break;
                 }
 
                 else if (checkState == PLAYERWIN) {
-                    clearScreen();
-                    printBoard();
-
-                    gotoxytic(55, 14);
-                    printf("Player가 이겼습니다!         \n");
-                    isGameRunning = 0;
+                    displayPlayerWinMessage();
+                    break;
                 }
 
                 else if (checkState == COMPUTERWIN) {
-                    clearScreen();
-                    printBoard();
-
-                    gotoxytic(55, 14);
-                    printf("Computer가 이겼습니다!        \n");
-                    isGameRunning = 0;
+                    displayComputerWinMessage();
+                    break;
                 }
 
             }
             else {
-                clearScreen();
-                printBoard();
-
-                gotoxytic(55, 14);
-                printf("이미 입력된 숫자입니다. 다시입력해주세요.\n");
-                getchar();
-                getchar();
+                displayInputRetryMessage();
+                continue;
             }
         }
         else {
-            clearScreen();
             printBoard();
 
             gotoxytic(55, 14);
@@ -108,30 +96,18 @@ int tictactoe() {
 
 
         if (checkState == DRAW) {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("비겼습니다!                        \n");
-            isGameRunning = 0;
+            displayDrawMessage();
+            break;
         }
 
         else if (checkState == PLAYERWIN) {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("Player가 이겼습니다!                  \n");
-            isGameRunning = 0;
+            displayPlayerWinMessage();
+            break;
         }
 
         else if (checkState == COMPUTERWIN) {
-            clearScreen();
-            printBoard();
-
-            gotoxytic(55, 14);
-            printf("Computer가 이겼습니다!                  \n");
-            isGameRunning = 0;
+            displayComputerWinMessage();
+            break;
         }
 
     }
@@ -140,12 +116,52 @@ int tictactoe() {
 	return -1;
 }
 
+
+//이미 입력된 숫자를 입력받았을 때 화면에 띄우는 부분
+void displayInputRetryMessage() {
+    printBoard();
+    gotoxy(48, 14);
+    printf("이미 입력된 숫자입니다. 잠시 기다렸다가 다시입력해주세요.\n");
+    Sleep(500);
+}
+
+
+//Player가 이겼을 때 화면에 띄우는 부분
+void displayPlayerWinMessage() {
+    printBoard();
+    gotoxy(55, 14);
+    printf("Player가 이겼습니다!\n");
+    Sleep(500);
+}
+
+
+//Computer가 이겼을 때 화면에 띄우는 부분
+void displayComputerWinMessage() {
+    printBoard();
+    gotoxy(55, 14);
+    printf("Computer가 이겼습니다!\n");
+    Sleep(500);
+}
+
+
+//비겼을 때 화면에 띄우는 부분
+void displayDrawMessage() {
+    printBoard();
+    gotoxy(55, 14);
+    printf("비겼습니다!\n");
+    Sleep(500);
+}
+
+
 void gotoxytic(int x, int y) {
     COORD pos = { x, y };
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
 }
 
 void printBoard() {
+
+    clearScreen();
+
     // game title
     gotoxycol(45, 2, 14, "★ Tic Tac Toe ★");
     // draw game board
