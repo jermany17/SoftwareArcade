@@ -1,6 +1,6 @@
 #include "score_manager.h"
 #include <stdio.h>
-
+#include <string.h>
 
 void checkFileExist() {
 
@@ -21,5 +21,28 @@ void checkFileExist() {
     }
     else
         fclose(fp);
+
+}
+
+void checkScore(char gameName[10], int curGameScore) {
+
+    char savedGameName[10];
+    int savedGameScore;
+
+    FILE* file = fopen("game_scores.txt", "r");
+    if (file == NULL) {
+        printf("score file does not exist");
+        exit(-1);
+    }
+
+    while (fscanf(file, "%s %d", savedGameName, &savedGameScore) != EOF) {
+        if (strcmp(gameName, savedGameName) == 0 && curGameScore > savedGameScore) {
+            fclose(file);
+            updateScore(gameName, curGameScore);
+            return;
+        }
+    }
+
+    fclose(file);
 
 }
