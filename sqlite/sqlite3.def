@@ -360,3 +360,7 @@ sqlite3session_object_config
 sqlite3session_patchset
 sqlite3session_patchset_strm
 sqlite3session_table_filter
+
+
+sqlite3_open_f
+sqlite3_errmsg_f

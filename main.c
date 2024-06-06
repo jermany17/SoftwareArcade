@@ -39,7 +39,6 @@ int main() {
     console(); // 콘솔 크기 지정
     removeCursor();
 
-    database_init("game_scores.db");    // 데이터 베이스 확인 & 초기화
 
     while (1) {
         switch (todo) {
