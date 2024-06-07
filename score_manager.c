@@ -37,7 +37,6 @@ void checkScore(char *gameName, int curGameScore) {
     }
 
     while (fscanf(file, "%s %d", savedGameName, &savedGameScore) != EOF) {
-
         if (strcmp(gameName, savedGameName) == 0 && curGameScore > savedGameScore) {
             fclose(file);
             updateFile(gameName, curGameScore);
@@ -85,4 +84,26 @@ void updateFile(char *gameName, int newScore) {
 
     remove("SOFTWAREARCADE_SCORE.txt");
     rename("temp.txt", "SOFTWAREARCADE_SCORE.txt");
+}
+
+int getHighestScore(char* gameName) {
+
+    char savedGameName[10];
+    int savedGameScore;
+
+    FILE* file = fopen("SOFTWAREARCADE_SCORE.txt", "r");
+    if (file == NULL) {
+        printf("score file does not exist\n");
+        exit(-1);
+    }
+
+    while (fscanf(file, "%s %d", savedGameName, &savedGameScore) != EOF) {
+        if (strcmp(gameName, savedGameName) == 0) {
+            fclose(file);
+            return savedGameScore;
+        }
+    }
+
+    fclose(file);
+    return -1;
 }
