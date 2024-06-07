@@ -11,7 +11,7 @@
 // gameBoardinfo[21][12];
 
 int tetris() {
-    
+
     posX = 12;
     posY = 0;
     speed = 30; // 블록 이동 속도
@@ -24,6 +24,8 @@ int tetris() {
             gameBoardInfo[i][j] = 0;
         }
     }
+
+    best_score = getHighestScore(tetrisGameName);
 
     srand((unsigned int)time(NULL)); // 난수 생성
     removeCursor();  // 커서 제거

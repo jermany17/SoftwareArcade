@@ -30,7 +30,6 @@ Snake* tail = NULL;
 
 int direction = 3;
 int stage = 0;
-int stageBestScore = 0;
 int speed = 15;
 int ballCount = 0;
 int length = 3;
@@ -84,6 +83,7 @@ int snake() {
 }
 
 void stage1() {
+    stageBestScore = getHighestScore(snakeGameName);
     drawBoard();
     initSnake();
     addBall();
@@ -390,6 +390,7 @@ int isGameOver() { // game ends when detectCollision returns 1 or 2
 void gameOver() {
 
     checkScore(snakeGameName, currentScore);
+    stageBestScore = getHighestScore(snakeGameName);
     Sleep(700);
 
     system("cls");
