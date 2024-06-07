@@ -41,6 +41,7 @@ void AddBlockToBoard(void); // 현재 블록을 게임 보드에 추가하는 함수
 void RemoveFillUpLine(void); // 가득 찬 줄을 제거하는 함수
 
 int score = 0, best_score = 0; // 게임 점수, 최고 점수
+char* gameName = "TETRIS";
 
 void ShowBlock(char blockInfo[4][4]) // 블록을 화면에 표시하는 함수
 {

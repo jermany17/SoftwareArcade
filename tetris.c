@@ -52,6 +52,9 @@ int tetris() {
     // 게임 오버 메시지 출력
     setCurrentCursorPos(11, 1);
     puts("GameOver");
+
+    checkScore(gameName, score);
+
     Sleep(100);
     return -1;
 }

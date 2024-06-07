@@ -100,6 +100,9 @@ void stage1() {
         }
     }
     gameOver();
+
+    checkScore(gameName, currentScore);
+
 }
 
 void initSnake() { // initialises snake character

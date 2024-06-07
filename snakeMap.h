@@ -28,6 +28,8 @@ int gameBoardInfo[GBOARD_HEIGHT + 1][GBOARD_WIDTH + 2];
 int heart = 3; // maximum num of lives
 int currentScore = 0;
 
+char* gameName = "SNAKE";
+
 void initGameBoardInfo() { // setting up boundaries
     for (int y = 0; y < GBOARD_HEIGHT; y++) {
         gameBoardInfo[y][0] = 1;
