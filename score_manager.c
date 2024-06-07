@@ -27,6 +27,7 @@ void checkFileExist() {
 }
 
 void checkScore(char *gameName, int curGameScore) {
+
     char savedGameName[10];
     int savedGameScore;
 
@@ -48,6 +49,7 @@ void checkScore(char *gameName, int curGameScore) {
 }
 
 void updateFile(char *gameName, int newScore) {
+
     FILE* fp = fopen("SOFTWAREARCADE_SCORE.txt", "r");
     FILE* tempFile = fopen("temp.txt", "w");
 
@@ -106,4 +108,54 @@ int getHighestScore(char* gameName) {
 
     fclose(file);
     return -1;
+}
+
+void updateTicTacToeScore(char *gameName, int winner) {
+
+    char savedGameName[10];
+    int computerS, playerS, drawnS;
+    bool found = false;
+    long pos;
+
+    FILE* file = fopen("SOFTWAREARCADE_SCORE.txt", "r+");
+    if (file == NULL) {
+        printf("score file does not exist\n");
+        exit(-1);
+    }
+
+    while (true) {
+        pos = ftell(file);
+        if (fscanf(file, "%s", savedGameName) != EOF) {
+            if (strcmp(gameName, savedGameName) == 0) {
+
+                found = true;
+                fseek(file, pos, SEEK_SET); // 이전에 읽은 줄의 시작 위치로 이동
+                fscanf(file, "%s %d %d %d", savedGameName, &computerS, &playerS, &drawnS);
+
+                switch (winner) {
+                case 0:
+                    computerS++;
+                    break;
+                case 1:
+                    playerS++;
+                    break;
+                case 2:
+                    drawnS++;
+                    break;
+                default:
+                    break;
+                }
+                fseek(file, pos, SEEK_SET);      // 파일 포인터 이전에 읽은 줄의 시작 위치로 설정
+
+                fprintf(file, "\n%s %d %d %d\n", savedGameName, computerS, playerS, drawnS);
+                fflush(file);
+                break;
+            }
+        }
+        else
+            break;
+    }
+
+    fclose(file);
+
 }

@@ -4,7 +4,7 @@
 void checkFileExist();
 void checkScore(char* gameName, int curGameScore);
 void updateFile(char* gameName, int curGameScore);
-void updateTicTacToeScore(int winner);
+void updateTicTacToeScore(char* gameName, int winner);
 int getHighestScore(char* gameName);
 
 #endif 
