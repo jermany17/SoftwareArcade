@@ -101,7 +101,7 @@ void stage1() {
     }
     gameOver();
 
-    checkScore(gameName, currentScore);
+    checkScore(snakeGameName, currentScore);
 
 }
 

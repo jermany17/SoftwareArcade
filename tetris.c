@@ -53,7 +53,7 @@ int tetris() {
     setCurrentCursorPos(11, 1);
     puts("GameOver");
 
-    checkScore(gameName, score);
+    checkScore(tetrisGameName, score);
 
     Sleep(100);
     return -1;
