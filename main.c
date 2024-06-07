@@ -39,6 +39,7 @@ int main() {
     console(); // 콘솔 크기 지정
     removeCursor();
 
+    checkFileExist();
 
     while (1) {
         switch (todo) {
