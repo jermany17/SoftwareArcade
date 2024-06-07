@@ -67,14 +67,17 @@ int tictactoe() {
 
             if (checkState == DRAW) {
                 displayDrawMessage();
+                updateTicTacToeScore("TICTACTOE", 2);
                 break;
             }
             else if (checkState == PLAYERWIN) {
                 displayPlayerWinMessage();
+                updateTicTacToeScore("TICTACTOE", 1);
                 break;
             }
             else if (checkState == COMPUTERWIN) {
                 displayComputerWinMessage();
+                updateTicTacToeScore("TICTACTOE", 0);
                 break;
             }
 
@@ -91,16 +94,19 @@ int tictactoe() {
 
         if (checkState == DRAW) {
             displayDrawMessage();
+            updateTicTacToeScore("TICTACTOE", 2);
             break;
         }
 
         else if (checkState == PLAYERWIN) {
             displayPlayerWinMessage();
+            updateTicTacToeScore("TICTACTOE", 1);
             break;
         }
 
         else if (checkState == COMPUTERWIN) {
             displayComputerWinMessage();
+            updateTicTacToeScore("TICTACTOE", 0);
             break;
         }
 

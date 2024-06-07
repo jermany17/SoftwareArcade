@@ -1,3 +1,10 @@
-#pragma once
-#include <sqlite3.h>
-#include <stdio.h>
+#ifndef SCORE_MANAGER_H
+#define SCORE_MANAGER_H
+
+void checkFileExist();
+void checkScore(char* gameName, int curGameScore);
+void updateFile(char* gameName, int curGameScore);
+void updateTicTacToeScore(char* gameName, int winner);
+int getHighestScore(char* gameName);
+
+#endif 

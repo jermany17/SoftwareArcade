@@ -5,6 +5,7 @@
 #include <Windows.h>
 #include <time.h>
 #include <conio.h>
+#include "score_manager.h"
 
 enum ColorType {
     BLACK, darkBLUE, DarkGreen, darkSkyBlue, DarkRed,
@@ -37,7 +38,8 @@ int todo = -1;
 int main() {
     console(); // 콘솔 크기 지정
     removeCursor();
-    
+
+    checkFileExist();
 
     while (1) {
         switch (todo) {

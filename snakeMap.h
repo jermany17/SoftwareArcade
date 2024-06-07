@@ -27,6 +27,9 @@ void clearScreen();
 int gameBoardInfo[GBOARD_HEIGHT + 1][GBOARD_WIDTH + 2];
 int heart = 3; // maximum num of lives
 int currentScore = 0;
+int stageBestScore = 0;
+
+char* snakeGameName = "SNAKE";
 
 void initGameBoardInfo() { // setting up boundaries
     for (int y = 0; y < GBOARD_HEIGHT; y++) {
@@ -80,7 +83,7 @@ void printStage() {
 void printHighscore() {
     gotoxycol(72, 7, 15, "Highscore: ");
     setCurrentCursorPos(83, 7);
-    //printf("%5d", stageBestScore[stage - 1]);
+    printf("%5d", stageBestScore);
     // print Highscore after setting cursor position and calling from text file
 }
 
