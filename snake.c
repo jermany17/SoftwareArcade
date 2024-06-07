@@ -101,8 +101,6 @@ void stage1() {
     }
     gameOver();
 
-    checkScore(snakeGameName, currentScore);
-
 }
 
 void initSnake() { // initialises snake character
@@ -390,6 +388,8 @@ int isGameOver() { // game ends when detectCollision returns 1 or 2
 }
 
 void gameOver() {
+
+    checkScore(snakeGameName, currentScore);
     Sleep(700);
 
     system("cls");
