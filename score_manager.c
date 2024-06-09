@@ -2,7 +2,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <Windows.h>
 #pragma warning(disable:4996)
+
+void setCPos(int x, int y) { // set current cursor position
+    COORD pos = { x, y };
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), pos);
+}
 
 void checkFileExist() {
 
@@ -48,7 +54,7 @@ void checkScore(char *gameName, int curGameScore) {
     fclose(file);
 }
 
-void updateFile(char *gameName, int newScore) {
+void updateFile(char *gameName, int newScore) {     // 기존 점수보다 높은 점수 파일에 추가
 
     FILE* fp = fopen("SOFTWAREARCADE_SCORE.txt", "r");
     FILE* tempFile = fopen("temp.txt", "w");
@@ -62,8 +68,6 @@ void updateFile(char *gameName, int newScore) {
     char name[10];
     int score;
     int tempScore = newScore;
-
-
 
     while (fgets(buffer, sizeof(buffer), fp) != NULL) {
         sscanf(buffer, "%s %d", name, &score);
@@ -88,7 +92,7 @@ void updateFile(char *gameName, int newScore) {
     rename("temp.txt", "SOFTWAREARCADE_SCORE.txt");
 }
 
-int getHighestScore(char* gameName) {
+int getHighestScore(char* gameName) {       // 입력받은 게임의 최고 점수 반환
 
     char savedGameName[10];
     int savedGameScore;
@@ -108,6 +112,7 @@ int getHighestScore(char* gameName) {
 
     fclose(file);
     return -1;
+
 }
 
 void updateTicTacToeScore(char *gameName, int winner) {
@@ -134,10 +139,10 @@ void updateTicTacToeScore(char *gameName, int winner) {
 
                 switch (winner) {
                 case 0:
-                    computerS++;
+                    playerS++;
                     break;
                 case 1:
-                    playerS++;
+                    computerS++;
                     break;
                 case 2:
                     drawnS++;
@@ -158,4 +163,154 @@ void updateTicTacToeScore(char *gameName, int winner) {
 
     fclose(file);
 
+}
+
+
+int ShowScoreBoard()
+{
+
+    int currentgameNum = 0;   
+
+    printDiscription(currentgameNum);
+    printTotalScore(currentgameNum);
+
+    int key = 0;
+
+    while (key != 13) {     // 스코어보드 내에서 좌우로 움직이며 게임 점수 확인
+        if (_kbhit() != 0)
+        {
+            key = _getch();
+            switch (key)
+            {
+            case LEFT:
+                currentgameNum--;
+                if (currentgameNum < 0)
+                    currentgameNum += 3;
+                printDiscription(currentgameNum);
+                printTotalScore(currentgameNum);
+                break;
+            case RIGHT:
+                currentgameNum++;
+                if (currentgameNum > 2)
+                    currentgameNum -= 3;
+                printDiscription(currentgameNum);
+                printTotalScore(currentgameNum);
+                break;
+            case ENTER:
+                return -1;
+                break;
+            }
+        }
+    }
+
+
+    return -1;
+
+}
+
+int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력
+{
+
+    FILE* fp;
+    fp = fopen("SOFTWAREARCADE_SCORE.txt", "r");
+    if (fp == NULL) {
+        printf("score file does not exist\n");
+        return -1;
+    }
+
+    char gameName[50];
+    int score1, score2, score3;
+    char targetGame[50];
+
+    switch (curGameNum) {      // curGameNum 값에 따라 출력할 게임 이름 설정
+    case 0:
+        strcpy(targetGame, "SNAKE");
+        break;
+    case 1:
+        strcpy(targetGame, "TETRIS");
+        break;
+    case 2:
+        strcpy(targetGame, "TICTACTOE");
+        break;
+    default:
+        printf("Invalid game number\n");
+        fclose(fp);
+        return -1;
+    }
+
+    int x = 52, y = 8;
+    int lineNum = 0;
+
+    while (fscanf(fp, "%s", gameName) != EOF) {
+        if (strcmp(gameName, targetGame) == 0) {
+            if (curGameNum == 2) { // TICTACTOE의 경우 점수가 3개
+                fscanf(fp, "%d %d %d", &score1, &score2, &score3);
+                setCPos(x + 1, y + 2 * lineNum);
+                printf("%d : %d", score1, score2);
+                setCPos(x - 12, y + 2 * lineNum);
+                printf("WIN");
+                setCPos(x + 15, y + 2 * lineNum);
+                printf("LOSE");
+
+                setCPos(x + 1, y + 2 * lineNum + 4);
+                printf("DRAWN");
+                setCPos(x + 3, y + 2 * lineNum + 6);
+                printf("%d", score3);
+            }
+            else { // SNAKE, TETRIS의 경우 점수 1개
+                fscanf(fp, "%d", &score1);
+                setCPos(x, y + 2 * lineNum);
+                printf("%08d\n", score1);
+            }
+            lineNum++;
+        }
+        else {
+            if (curGameNum == 2) { // 다른 게임 건너뛰기 위해 읽기
+                fscanf(fp, "%d %d %d", &score1, &score2, &score3);
+            }
+            else {
+                fscanf(fp, "%d", &score1);
+            }
+        }
+    }
+
+    
+
+    fclose(fp);
+}
+
+void printDiscription(int curGameNum) {     // 점수를 제외한 스코어보드 출력
+
+    system("cls");
+
+    int Score_posX = 48;
+    int Score_posY = 3;
+
+    setCPos(Score_posX , Score_posY );
+    printf("<< SCORE BOARD >>");;
+
+    switch (curGameNum) {       // 게임 이름에 따라 다르게 출력
+    case 0 :
+        setCPos(Score_posX+3, Score_posY + 2);
+        printf("SNAKE GAME");
+        break;
+    case 1:
+        setCPos(Score_posX + 3, Score_posY + 2);
+        printf("TETIRS GAME");
+        break;
+    case 2:
+        setCPos(Score_posX + 3, Score_posY + 2);
+        printf("TICTACTOE");
+        break;
+    }
+
+    setCPos(Score_posX - 7, Score_posY + 26);
+    printf("Press ENTER  to go to Main Menu");
+
+    setCPos(10, Score_posY + 26);
+    printf("<-");
+    setCPos(98, Score_posY + 26);
+    printf("->");
+
+    return;
 }

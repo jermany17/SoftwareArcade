@@ -72,12 +72,12 @@ int tictactoe() {
             }
             else if (checkState == PLAYERWIN) {
                 displayPlayerWinMessage();
-                updateTicTacToeScore("TICTACTOE", 1);
+                updateTicTacToeScore("TICTACTOE", 0);
                 break;
             }
             else if (checkState == COMPUTERWIN) {
                 displayComputerWinMessage();
-                updateTicTacToeScore("TICTACTOE", 0);
+                updateTicTacToeScore("TICTACTOE", 1);
                 break;
             }
 
@@ -100,13 +100,13 @@ int tictactoe() {
 
         else if (checkState == PLAYERWIN) {
             displayPlayerWinMessage();
-            updateTicTacToeScore("TICTACTOE", 1);
+            updateTicTacToeScore("TICTACTOE", 0);
             break;
         }
 
         else if (checkState == COMPUTERWIN) {
             displayComputerWinMessage();
-            updateTicTacToeScore("TICTACTOE", 0);
+            updateTicTacToeScore("TICTACTOE", 1);
             break;
         }
 

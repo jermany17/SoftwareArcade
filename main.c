@@ -24,7 +24,7 @@ enum ColorType {
 #define M_height 20
 #define M_width 45 // 메뉴 시작 좌표
 #define Title_Speed 35
-const int M_num = 4;
+const int M_num = 5;
 int Selected_Menu_Num = 0; // 메뉴 넘버
 
 void PrintTitle();
@@ -62,7 +62,12 @@ int main() {
             getch();
             system("cls");
             break;
-        case 3: // 종료
+        case 3: // 스코어보드
+            todo=ShowScoreBoard();
+            getch();
+            system("cls");
+            break;
+        case 4: // 종료
             return 0;
         }
         system("cls");
@@ -131,9 +136,9 @@ void PrintTitle() {
 
 
 void PrintMenu(int n) {
-    char MenuArr[4][10] = { "SNAKE", "TETRIS", "TICTACTOE", "EXIT " };
+    char MenuArr[5][10] = { "SNAKE", "TETRIS", "TICTACTOE", "SCORE", "EXIT " };
     // 각 게임 들어갈 수 있도록
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         if (n == i) {
             textcolor(darkSkyBlue);
             setCurrentCursorPos(M_width, M_height + i * 2);
@@ -154,7 +159,7 @@ void PrintMenu(int n) {
 }
 int SelectMenu() {
     int key;
-    int arrM[4] = { 0, 1, 2, 3 };
+    int arrM[5] = { 0, 1, 2, 3, 4 };
     PrintMenu(Selected_Menu_Num);
 
     while (1) {
@@ -183,7 +188,7 @@ int SelectMenu() {
     }
 }
 void Delete_Menu() {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         setCurrentCursorPos(M_width, M_height + i * 2);
         printf("                  ");
     }
