@@ -54,7 +54,7 @@ void checkScore(char *gameName, int curGameScore) {
     fclose(file);
 }
 
-void updateFile(char *gameName, int newScore) {
+void updateFile(char *gameName, int newScore) {     // 기존 점수보다 높은 점수 파일에 추가
 
     FILE* fp = fopen("SOFTWAREARCADE_SCORE.txt", "r");
     FILE* tempFile = fopen("temp.txt", "w");
@@ -68,8 +68,6 @@ void updateFile(char *gameName, int newScore) {
     char name[10];
     int score;
     int tempScore = newScore;
-
-
 
     while (fgets(buffer, sizeof(buffer), fp) != NULL) {
         sscanf(buffer, "%s %d", name, &score);
@@ -94,7 +92,7 @@ void updateFile(char *gameName, int newScore) {
     rename("temp.txt", "SOFTWAREARCADE_SCORE.txt");
 }
 
-int getHighestScore(char* gameName) {
+int getHighestScore(char* gameName) {       // 입력받은 게임의 최고 점수 반환
 
     char savedGameName[10];
     int savedGameScore;
@@ -178,7 +176,7 @@ int ShowScoreBoard()
 
     int key = 0;
 
-    while (key != 13) {
+    while (key != 13) {     // 스코어보드 내에서 좌우로 움직이며 게임 점수 확인
         if (_kbhit() != 0)
         {
             key = _getch();
@@ -210,7 +208,7 @@ int ShowScoreBoard()
 
 }
 
-int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력, a는 포지션으로 
+int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력
 {
 
     FILE* fp;
@@ -224,8 +222,7 @@ int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력, a는 포지션으로
     int score1, score2, score3;
     char targetGame[50];
 
-    // curGameNum 값에 따라 출력할 게임 이름 설정
-    switch (curGameNum) {
+    switch (curGameNum) {      // curGameNum 값에 따라 출력할 게임 이름 설정
     case 0:
         strcpy(targetGame, "SNAKE");
         break;
@@ -260,7 +257,7 @@ int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력, a는 포지션으로
                 setCPos(x + 3, y + 2 * lineNum + 6);
                 printf("%d", score3);
             }
-            else { // SNAKE, TETRIS의 경우 점수가 1개
+            else { // SNAKE, TETRIS의 경우 점수 1개
                 fscanf(fp, "%d", &score1);
                 setCPos(x, y + 2 * lineNum);
                 printf("%08d\n", score1);
@@ -268,7 +265,7 @@ int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력, a는 포지션으로
             lineNum++;
         }
         else {
-            if (curGameNum == 2) { // 다른 게임을 건너뛰기 위해 읽기
+            if (curGameNum == 2) { // 다른 게임 건너뛰기 위해 읽기
                 fscanf(fp, "%d %d %d", &score1, &score2, &score3);
             }
             else {
@@ -282,7 +279,7 @@ int printTotalScore(int curGameNum)      //순위, 점수, 이름 출력, a는 포지션으로
     fclose(fp);
 }
 
-void printDiscription(int curGameNum) {
+void printDiscription(int curGameNum) {     // 점수를 제외한 스코어보드 출력
 
     system("cls");
 
@@ -292,7 +289,7 @@ void printDiscription(int curGameNum) {
     setCPos(Score_posX , Score_posY );
     printf("<< SCORE BOARD >>");;
 
-    switch (curGameNum) {
+    switch (curGameNum) {       // 게임 이름에 따라 다르게 출력
     case 0 :
         setCPos(Score_posX+3, Score_posY + 2);
         printf("SNAKE GAME");
