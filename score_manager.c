@@ -135,7 +135,7 @@ void updateTicTacToeScore(char *gameName, int winner) {
 
                 found = true;
                 fseek(file, pos, SEEK_SET); // 이전에 읽은 줄의 시작 위치로 이동
-                fscanf(file, "%s %d %d %d", savedGameName, &computerS, &playerS, &drawnS);
+                fscanf(file, "%s %d %d %d", savedGameName, &playerS, &computerS, &drawnS);
 
                 switch (winner) {
                 case 0:
@@ -152,7 +152,7 @@ void updateTicTacToeScore(char *gameName, int winner) {
                 }
                 fseek(file, pos, SEEK_SET);      // 파일 포인터 이전에 읽은 줄의 시작 위치로 설정
 
-                fprintf(file, "\n%s %d %d %d\n", savedGameName, computerS, playerS, drawnS);
+                fprintf(file, "\n%s %d %d %d\n", savedGameName, playerS, computerS, drawnS);
                 fflush(file);
                 break;
             }
