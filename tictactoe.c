@@ -143,8 +143,9 @@ int getInputNumber() {
 
 //이미 입력된 숫자를 입력받았을 때 화면에 띄우는 함수
 void displayInputRetryMessage() {
-
     printBoard();
+    gotoxytic(48, 14);
+    printf("                                                                ");
     gotoxytic(48, 14);
     printf("이미 입력된 숫자입니다. 잠시 기다렸다가 다시입력해주세요.\n");
     Sleep(500);
@@ -154,6 +155,8 @@ void displayInputRetryMessage() {
 //Player가 이겼을 때 화면에 띄우는 함수
 void displayPlayerWinMessage() {
     printBoard();
+    gotoxytic(48, 14);
+    printf("                                                                ");
     gotoxytic(55, 14);
     printf("Player가 이겼습니다!\n");
     Sleep(500);
@@ -163,6 +166,8 @@ void displayPlayerWinMessage() {
 //Computer가 이겼을 때 화면에 띄우는 함수
 void displayComputerWinMessage() {
     printBoard();
+    gotoxytic(48, 14);
+    printf("                                                                ");
     gotoxytic(55, 14);
     printf("Computer가 이겼습니다!\n");
     Sleep(500);
